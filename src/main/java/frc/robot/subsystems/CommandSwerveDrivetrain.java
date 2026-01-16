@@ -182,11 +182,11 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                             .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())),
                     new PPHolonomicDriveController( // HolonomicPathFollowerConfig, this should likely live in your Constants class
                             new PIDConstants( // Translation PID constants
-                                    10,
+                                    0.1,
                                     0,
                                     0),
                             new PIDConstants( // Rotation PID constants
-                                    5,
+                                    25,
                                     0,
                                     0)
                     ),
@@ -335,5 +335,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         Matrix<N3, N1> visionMeasurementStdDevs
     ) {
         super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
+    }
+
+    public Pose2d getStatePose() {
+        return getState().Pose;
     }
 }

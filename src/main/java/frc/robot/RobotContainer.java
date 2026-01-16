@@ -63,11 +63,7 @@ public class RobotContainer {
             )
         );
 
-        commandDriverController.cross().whileTrue(drivetrain.applyRequest(() -> brake));
-        commandDriverController.circle().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-commandDriverController.getLeftY(), -commandDriverController.getLeftX()))
-        ));
-        commandDriverController.L2().whileTrue(new UpdateOdoFromVisionCommand(drivetrain));
+        //commandDriverController.L2().whileTrue(new UpdateOdoFromVisionCommand(drivetrain));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -76,8 +72,8 @@ public class RobotContainer {
         commandDriverController.options().and(commandDriverController.triangle()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         commandDriverController.options().and(commandDriverController.square()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        // reset the field-centric heading on left bumper press
-        commandDriverController.L1().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        // reset the field-centric heading
+        commandDriverController.povDown().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
