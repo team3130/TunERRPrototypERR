@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.commands.DriveWithTransPID;
 import frc.robot.commands.UpdateOdoFromVisionCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -44,8 +44,12 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser;
 
+    private final DriveWithTransPID command = new DriveWithTransPID(drivetrain, drive);
+
     public RobotContainer() {
         configureBindings();
+
+        SmartDashboard.putData(command);
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -74,6 +78,8 @@ public class RobotContainer {
 
         // reset the field-centric heading
         commandDriverController.povDown().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        commandDriverController.povUp().whileTrue(command);
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

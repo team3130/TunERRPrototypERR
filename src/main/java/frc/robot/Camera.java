@@ -36,7 +36,7 @@ public class Camera implements Sendable {
             Alert alert = new Alert(fieldName, Alert.AlertType.kInfo);
             alert.set(true);
         } catch(Exception e) {
-            aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+            aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltAndymark);
             System.out.println("Fix ur Field ngl");
             System.out.println(fieldName);
         }

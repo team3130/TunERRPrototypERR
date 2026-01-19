@@ -1,29 +1,28 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
 public class DriveWithTransPID extends Command {
     private final CommandSwerveDrivetrain driveTrain;
-    private final PIDController pidController;
+    private final ProfiledPIDController pidController;
     private final SwerveRequest.FieldCentric drive;
-    private double kP = 8;
+    private double kP = 5.5;
     private double kI = 0;
-    private double kD = 0.3;
-    private double setpoint;
+    private double kD = 0;
+    private double setpoint = 0;
 
     public DriveWithTransPID(CommandSwerveDrivetrain driveTrain, SwerveRequest.FieldCentric drive) {
         this.driveTrain = driveTrain;
         this.drive = drive;
-        pidController = new PIDController(kP, kI, kD);
+        pidController = new ProfiledPIDController(kP ,kI, kD, new Constraints(3, 4));
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
         addRequirements(this.driveTrain);
@@ -35,13 +34,8 @@ public class DriveWithTransPID extends Command {
      */
     @Override
     public void initialize() {
-        if(DriverStation.getAlliance().isPresent()) {
-            if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-                setpoint = 7;
-            } else {
-                setpoint = 10;
-            }
-        }
+        pidController.reset(driveTrain.getStatePose().getX());
+        setpoint = driveTrain.getStatePose().getX() + 5;
     }
 
     /**
@@ -50,11 +44,14 @@ public class DriveWithTransPID extends Command {
      */
     @Override
     public void execute() {
-      double value = -pidController.calculate(driveTrain.getStatePose().getX(), driveTrain.getStatePose().getX()+3);
-      driveTrain.setControl(drive
-              .withVelocityX(value)
-              .withVelocityY(0)
-              .withRotationalRate(0));
+        pidController.setP(kP);
+        pidController.setI(kI);
+        pidController.setD(kD);
+        double value = pidController.calculate(driveTrain.getStatePose().getX(), setpoint);
+        driveTrain.setControl(drive
+                .withVelocityX(value)
+                .withVelocityY(0)
+                .withRotationalRate(0));
     }
 
     /**
@@ -88,5 +85,28 @@ public class DriveWithTransPID extends Command {
     @Override
     public void end(boolean interrupted) {
 
+    }
+
+    public void setP(double value) {
+        kP = value;
+    }
+
+    public void setI(double value) {
+        kI = value;
+    }
+
+    public void setD(double value) {
+        kD = value;
+    }
+
+    public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Trans PID Command");
+
+        builder.addDoubleProperty("Setpoint Velocity", () -> pidController.getSetpoint().velocity, null);
+        builder.addDoubleProperty("Setpoint Position", () -> pidController.getSetpoint().position, null);
+
+        builder.addDoubleProperty("P", () -> this.kP, this::setP);
+        builder.addDoubleProperty("I", () -> this.kI, this::setI);
+        builder.addDoubleProperty("D", () -> this.kD, this::setD);
     }
 }
