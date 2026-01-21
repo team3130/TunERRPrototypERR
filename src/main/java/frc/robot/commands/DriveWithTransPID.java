@@ -14,7 +14,7 @@ public class DriveWithTransPID extends Command {
     private final CommandSwerveDrivetrain driveTrain;
     private final ProfiledPIDController pidController;
     private final SwerveRequest.FieldCentric drive;
-    private double kP = 5.5;
+    private double kP = 1.5;
     private double kI = 0;
     private double kD = 0;
     private double setpoint = 0;
@@ -22,7 +22,7 @@ public class DriveWithTransPID extends Command {
     public DriveWithTransPID(CommandSwerveDrivetrain driveTrain, SwerveRequest.FieldCentric drive) {
         this.driveTrain = driveTrain;
         this.drive = drive;
-        pidController = new ProfiledPIDController(kP ,kI, kD, new Constraints(3, 4));
+        pidController = new ProfiledPIDController(kP ,kI, kD, new Constraints(4, 6));
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
         addRequirements(this.driveTrain);
@@ -35,7 +35,7 @@ public class DriveWithTransPID extends Command {
     @Override
     public void initialize() {
         pidController.reset(driveTrain.getStatePose().getX());
-        setpoint = driveTrain.getStatePose().getX() + 5;
+        setpoint = driveTrain.getStatePose().getX() + 3;
     }
 
     /**
