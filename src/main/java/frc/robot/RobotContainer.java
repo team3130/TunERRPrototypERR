@@ -20,9 +20,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.DriveWithTransPID;
-import frc.robot.commands.UpdateOdoFromVisionCommand;
+import frc.robot.commands.UpdateOdoFromVision;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Limelight;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -41,6 +42,7 @@ public class RobotContainer {
     private final CommandPS5Controller commandDriverController = new CommandPS5Controller(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Limelight limelights = new Limelight(drivetrain);
 
     private final SendableChooser<Command> autoChooser;
 
@@ -66,6 +68,9 @@ public class RobotContainer {
                     .withRotationalRate(-commandDriverController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
+
+        //Vision Updates
+        limelights.setDefaultCommand(new UpdateOdoFromVision(drivetrain, limelights));
 
         //commandDriverController.L2().whileTrue(new UpdateOdoFromVisionCommand(drivetrain));
 
