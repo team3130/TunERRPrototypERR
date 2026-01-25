@@ -40,7 +40,9 @@ public class UpdateOdoFromVision extends Command {
     if(pose != null && pose.tagCount > 0) {
       driveTrain.addVisionMeasurement(pose.pose, pose.timestampSeconds);
     }
-    telemetry.telemerizeVision(pose.pose);
+    if(pose != null) {
+      telemetry.telemerizeVision(pose.pose);
+    }
   }
 
   // Called once the command ends or is interrupted.

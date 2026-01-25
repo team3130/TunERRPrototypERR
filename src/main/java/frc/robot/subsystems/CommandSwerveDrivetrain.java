@@ -16,6 +16,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.DriveFeedforwards;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -30,6 +31,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
@@ -40,6 +42,8 @@ import org.photonvision.PhotonCamera;
  * Subsystem so it can easily be used in command-based projects.
  */
 public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
+    private boolean hubToggle = false;
+
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
@@ -348,4 +352,31 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Pose2d getStatePose() {
         return getState().Pose;
     }
+
+    public SwerveRequest applyDeadband(SwerveRequest.FieldCentric drive, CommandPS5Controller controller, double MaxSpeed, double MaxAngularRate) {
+        double xJoystick = -controller.getLeftY();
+        double yJoystick = -controller.getLeftX();
+        double rotationJoystick = -controller.getRightX();
+        
+        xJoystick = MathUtil.applyDeadband(xJoystick, 0.04);
+        yJoystick = MathUtil.applyDeadband(yJoystick, 0.04);
+        rotationJoystick = MathUtil.applyDeadband(rotationJoystick, 0.04);
+
+        xJoystick = xJoystick * Math.abs(xJoystick);
+        yJoystick = yJoystick * Math.abs(yJoystick);
+        rotationJoystick = rotationJoystick * Math.abs(rotationJoystick);
+
+        return drive.withVelocityX(xJoystick * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(yJoystick * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(rotationJoystick * MaxAngularRate); // Drive counterclockwise with negative X (left)
+    }
+
+    public double applySingleDeadband(double input, double max) {
+        input = MathUtil.applyDeadband(input, 0.04);
+        input = input * Math.abs(input);
+        return input * max;
+    }
+
+    public boolean getHubToggle() {return hubToggle;}
+    public void setHubToggle(boolean value) {hubToggle = value;}
 }

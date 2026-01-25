@@ -25,6 +25,8 @@ import frc.robot.commands.DriveWithTransPID;
 import frc.robot.commands.RunTalonFX;
 import frc.robot.commands.RunTalonSRX;
 import frc.robot.commands.RunVictor;
+import frc.robot.commands.TeleopDrive;
+import frc.robot.commands.ToggleHubTargeting;
 import frc.robot.commands.UpdateOdoFromVision;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -81,30 +83,10 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
-    public SwerveRequest applyDeadband() {
-        double xJoystick = -commandDriverController.getLeftY();
-        double yJoystick = -commandDriverController.getLeftX();
-        double rotationJoystick = -commandDriverController.getRightX();
-        
-        xJoystick = MathUtil.applyDeadband(xJoystick, 0.04);
-        yJoystick = MathUtil.applyDeadband(yJoystick, 0.04);
-        rotationJoystick = MathUtil.applyDeadband(rotationJoystick, 0.04);
-
-        xJoystick = xJoystick * Math.abs(xJoystick);
-        yJoystick = yJoystick * Math.abs(yJoystick);
-        rotationJoystick = rotationJoystick * Math.abs(rotationJoystick);
-
-        return drive.withVelocityX(xJoystick * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(yJoystick * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(rotationJoystick * MaxAngularRate); // Drive counterclockwise with negative X (left)
-    }
-
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(this::applyDeadband));
+        drivetrain.setDefaultCommand(new TeleopDrive(drivetrain, commandDriverController, MaxSpeed, MaxAngularRate, drive));
 
         //Vision Updates
         limelights.setDefaultCommand(new UpdateOdoFromVision(drivetrain, limelights, logger));
@@ -122,6 +104,8 @@ public class RobotContainer {
         commandDriverController.square().whileTrue(new RunVictor(victor4));
         commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
         commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
+
+        commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
 
         // reset the field-centric heading
         commandDriverController.povUp().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
