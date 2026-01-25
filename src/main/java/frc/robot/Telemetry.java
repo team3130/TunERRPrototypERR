@@ -49,6 +49,7 @@ public class Telemetry {
     /* Robot pose for field positioning */
     private final NetworkTable table = inst.getTable("Pose");
     private final DoubleArrayPublisher fieldPub = table.getDoubleArrayTopic("robotPose").publish();
+    private final DoubleArrayPublisher visionPub = table.getDoubleArrayTopic("visionPose").publish();
     private final StringPublisher fieldTypePub = table.getStringTopic(".type").publish();
 
     /* Mechanisms to represent the swerve module states */
@@ -77,6 +78,7 @@ public class Telemetry {
             .append(new MechanismLigament2d("Direction", 0.1, 0, 0, new Color8Bit(Color.kWhite))),
     };
 
+    private final double[] m_visionArray = new double[3];
     private final double[] m_poseArray = new double[3];
     private final double[] m_moduleStatesArray = new double[8];
     private final double[] m_moduleTargetsArray = new double[8];
@@ -120,5 +122,13 @@ public class Telemetry {
 
             SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
         }
+    }
+
+    public void telemerizeVision(Pose2d visionPose) {
+        m_visionArray[0] = visionPose.getX();
+        m_visionArray[1] = visionPose.getY();
+        m_visionArray[2] = visionPose.getRotation().getDegrees();
+
+        visionPub.set(m_visionArray);
     }
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.LimelightHelpers;
+import frc.robot.Telemetry;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Limelight;
 
@@ -15,11 +16,13 @@ import frc.robot.subsystems.Limelight;
 public class UpdateOdoFromVision extends Command {
   private final CommandSwerveDrivetrain driveTrain;
   private final Limelight limelights;
+  private final Telemetry telemetry;
   /** Creates a new UpdateOdoFromVision. */
-  public UpdateOdoFromVision(CommandSwerveDrivetrain driveTrain, Limelight limelights) {
+  public UpdateOdoFromVision(CommandSwerveDrivetrain driveTrain, Limelight limelights, Telemetry telemetry) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveTrain = driveTrain;
     this.limelights = limelights;
+    this.telemetry = telemetry;
 
     addRequirements(limelights);
   }
@@ -34,7 +37,10 @@ public class UpdateOdoFromVision extends Command {
   @Override
   public void execute() {
     LimelightHelpers.PoseEstimate pose = limelights.getRobotPose();
-    driveTrain.addVisionMeasurement(pose.pose, pose.timestampSeconds);
+    if(pose != null && pose.tagCount > 0) {
+      driveTrain.addVisionMeasurement(pose.pose, pose.timestampSeconds);
+    }
+    telemetry.telemerizeVision(pose.pose);
   }
 
   // Called once the command ends or is interrupted.

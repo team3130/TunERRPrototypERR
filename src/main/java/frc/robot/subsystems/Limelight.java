@@ -16,13 +16,13 @@ public class Limelight extends SubsystemBase {
   /** Creates a new Limelight. */
   public Limelight(CommandSwerveDrivetrain driveTrain) {
     this.driveTrain = driveTrain;
-    LimelightHelpers.setCameraPose_RobotSpace(limelightName, 0, 0, 0, 0, 0, 0);
+    LimelightHelpers.setCameraPose_RobotSpace("", 0, 0, 0, 0, 0, 0);
   }
 
   public LimelightHelpers.PoseEstimate getRobotPose() {
-    double robotYaw = driveTrain.getPigeon2().getYaw().getValueAsDouble();
-    LimelightHelpers.SetRobotOrientation(limelightName, robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
-    return LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);
+    double robotYaw = driveTrain.getState().Pose.getRotation().getDegrees();
+    LimelightHelpers.SetRobotOrientation("", robotYaw, 0.0, 0.0, 0.0, 0.0, 0.0);
+    return LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("");
   }
 
   @Override
