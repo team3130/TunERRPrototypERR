@@ -1,0 +1,13 @@
+public class Account {
+    String name;
+    double priority;
+    double requestMax;
+    double requestMin;
+    double allowance;
+
+    public Account(String name, double priority, double requestMax, 
+                    double requestMin, double Allowance){
+                        this.name = name;
+                        this.priority = priority;
+                    };
+}
