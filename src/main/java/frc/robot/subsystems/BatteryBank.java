@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class BatteryBank extends SubsystemBase {
 
   Account[] accounts = {
-    new Account("Shooter", 0, 0, 0, 0), new Account("Hopper", 0 ,0 ,0 ,0), 
-    new Account("Intake", 0, 0, 0, 0), new Account("Chassis", 0, 0, 0, 0),
+    new Account("Shooter", 0, 0, 0, 0), 
+    new Account("Hopper", 0 ,0 ,0 ,0), 
+    new Account("Intake", 0, 0, 0, 0), 
+    new Account("Chassis", 0, 0, 0, 0),
     new Account("Climber", 0, 0, 0, 0)
   };
 
