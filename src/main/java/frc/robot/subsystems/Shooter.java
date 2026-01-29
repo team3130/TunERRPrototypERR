@@ -12,6 +12,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase{
 
@@ -25,7 +26,7 @@ public class Shooter extends SubsystemBase{
     private TalonFX talonHood;
     private DigitalInput limitSwitch;
     private boolean limitSwitchValue = limitSwitch.get();
-    private double velocityFuel = 11; //m/s
+    private double velocityFuel = 0.75; // m/s CHANGE FOR PERCENTAGE
     private double gearRatioHood = 1; //gearRatio * Code Rotations = Rotations IRL
     
 
@@ -52,6 +53,10 @@ public class Shooter extends SubsystemBase{
     
     //Shooter Constructer
     public Shooter() {
+        //Robot CAN ID
+        talonHood = new TalonFX(0);
+        talonWheel = new TalonFX(0);
+    
         //PID For Hood
         voltRequest0 = new MotionMagicDutyCycle(0);
         slot0Configs = new Slot0Configs();
@@ -108,6 +113,22 @@ public class Shooter extends SubsystemBase{
     public void shootStop() {
         angleZero();
         talonWheel.setControl(m_request1.withVelocity(0).withFeedForward(0.0));
+    }
+
+
+    public void shootForwardBasic() {
+        angleZero();
+        talonWheel.set(velocityFuel);
+    }
+
+    public void shootInvertedBasic() {
+        angleZero();
+        talonWheel.set(-velocityFuel);
+    }
+
+    public void shootStopBasic() {
+        angleZero();
+        talonWheel.set(0);
     }
 
 
