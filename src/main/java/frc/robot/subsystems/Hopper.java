@@ -11,8 +11,7 @@ public class Hopper extends SubsystemBase {
     private double hopperSpeed = 1;
     public Hopper() {
         hopperMotor = new TalonFX(Constants.CAN.Talon2);
-        hopperMotor.configFactoryDefault();
-        hopperMotor.setInverted(true);
+        hopperMotor.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
         hopperMotor.setNeutralMode(NeutralModeValue.Brake);
     } 
 
