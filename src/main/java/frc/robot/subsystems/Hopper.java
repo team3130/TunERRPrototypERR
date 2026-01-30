@@ -11,8 +11,7 @@ public class Hopper extends SubsystemBase {
     private double hopperSpeed = 1;
     public Hopper() {
         hopperMotor = new TalonFX(Constants.CAN.Talon2);
-        hopperMotor.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
-        hopperMotor.setNeutralMode(NeutralModeValue.Brake);
+        hopperMotor.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake)); // not necessary but just in case
     } 
 
     public void runHopper() {
@@ -37,6 +36,6 @@ public class Hopper extends SubsystemBase {
 
     @Override
     public void periodic() {
-
+        // run every 20 millisecond
     }
 }
