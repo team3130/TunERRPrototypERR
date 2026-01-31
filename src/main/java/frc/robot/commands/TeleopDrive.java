@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.PowerBank;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class TeleopDrive extends Command {
@@ -21,7 +22,7 @@ public class TeleopDrive extends Command {
   private final double maxSpeed;
   private final double maxAngularRate;
   private final SwerveRequest.FieldCentric drive;
-
+  private final PowerBank powerBank = new PowerBank(6);
   private Translation2d hubVector = new Translation2d(3.9, 0);
   private final PIDController pidController;
   /** Creates a new TeleopDrive. */
@@ -41,11 +42,14 @@ public class TeleopDrive extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    powerBank.calculateAllowance();
     if(driveTrain.getHubToggle()) {
       Translation2d robotVector = driveTrain.getState().Pose.getTranslation();
       Translation2d targetVector = hubVector.minus(robotVector);
