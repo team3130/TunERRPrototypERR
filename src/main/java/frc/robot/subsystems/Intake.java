@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase {
   private final TalonFX intake;
   private double speed = 0.1;
   public Intake() {
-    intake = new TalonFX(0);
+    intake = new TalonFX(31);
     intake.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs()
         .withNeutralMode(NeutralModeValue.Coast)
         .withInverted(InvertedValue.Clockwise_Positive)));

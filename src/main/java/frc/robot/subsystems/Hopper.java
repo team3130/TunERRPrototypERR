@@ -19,8 +19,8 @@ public class Hopper extends SubsystemBase {
   private double horizontalSpeed = 0.1;
   /** Creates a new Hopper. */
   public Hopper() {
-    verticalHopper = new TalonFX(0);
-    horizontalHopper = new TalonFX(0);
+    verticalHopper = new TalonFX(34);
+    horizontalHopper = new TalonFX(35);
 
     verticalHopper.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs()
         .withNeutralMode(NeutralModeValue.Coast)

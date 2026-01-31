@@ -20,8 +20,8 @@ public class Shooter extends SubsystemBase {
   private double speed = 0.1;
   /** Creates a new Shooter. */
   public Shooter() {
-    rightShooter = new TalonFX(0);
-    leftShooter = new TalonFX(0);
+    rightShooter = new TalonFX(32);
+    leftShooter = new TalonFX(32);
 
     leftShooter.setControl(new Follower(rightShooter.getDeviceID(), MotorAlignmentValue.Opposed));
 
