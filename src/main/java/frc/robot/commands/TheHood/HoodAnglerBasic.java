@@ -10,19 +10,19 @@ import frc.robot.subsystems.Shooter;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class HoodAnglerBasic extends Command {
   private final Shooter shooter;
-  private double angle;
+  
   /** Creates a new HoodAnglerBasic. */
   public HoodAnglerBasic(Shooter shooter, double angle) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
-    this.angle = angle;
+   
     addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.hoodAnglerBasic(angle);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,7 +32,7 @@ public class HoodAnglerBasic extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.stopHood();
+    
   }
 
   // Returns true when the command should end.

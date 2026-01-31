@@ -21,8 +21,11 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.DriveWithTransPID;
 import frc.robot.commands.UpdateOdoFromVisionCommand;
+import frc.robot.commands.Shooter.ShootForwardBasic;
+import frc.robot.commands.Shooter.ShootInvertedBasic;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -46,8 +49,12 @@ public class RobotContainer {
 
     private final DriveWithTransPID command = new DriveWithTransPID(drivetrain, drive);
 
+    private final Shooter shooter;
+
     public RobotContainer() {
+
         configureBindings();
+        shooter = new Shooter();
 
         SmartDashboard.putData(command);
 
@@ -82,6 +89,9 @@ public class RobotContainer {
         commandDriverController.povUp().whileTrue(command);
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        commandDriverController.circle().whileTrue(new ShootForwardBasic(shooter));
+        commandDriverController.cross().whileTrue(new ShootInvertedBasic(shooter));
     }
 
     public Command getAutonomousCommand() {
