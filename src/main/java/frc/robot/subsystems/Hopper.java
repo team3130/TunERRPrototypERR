@@ -11,7 +11,7 @@ public class Hopper extends SubsystemBase {
     private double hopperSpeed = 1;
     public Hopper() {
         hopperMotor = new TalonFX(Constants.CAN.Talon2); // not necessary but just in case
-        hopperMotor.getConfigurator().apply(new Config.withMotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast));
+        hopperMotor.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast));
     } 
 
     public void runHopper() {
