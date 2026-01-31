@@ -13,9 +13,9 @@ public class Hopper extends SubsystemBase {
     private double verticalSpeed = 0.5;
     private double hopperSpeed = 0.5;
     public Hopper() {
-        hopperMotor = new TalonFX(0); // not necessary but just in case
+        hopperMotor = new TalonFX(34); // not necessary but just in case
         hopperMotor.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast)));
-        hoppervertical = new TalonFX(0); // not necessary but just in case
+        hoppervertical = new TalonFX(35); // not necessary but just in case
         hoppervertical.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast)));
     }  
 
