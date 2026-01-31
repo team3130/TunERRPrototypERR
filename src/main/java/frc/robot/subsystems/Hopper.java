@@ -10,7 +10,7 @@ public class Hopper extends SubsystemBase {
     private final TalonFX hopperMotor;
     private double hopperSpeed = 1;
     public Hopper() {
-        hopperMotor = new TalonFX(Constants.CAN.Talon2); // not necessary but just in case
+        hopperMotor = new TalonFX(Constants.CAN.falcon1); // not necessary but just in case
         hopperMotor.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast));
     } 
 

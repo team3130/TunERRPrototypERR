@@ -72,6 +72,9 @@ public class RobotContainer {
         victor4 = new MultiUseVictor(4);
         talon5 = new MultiUseTalonSRX(5);
 
+        falcon1 = new Hopper();
+        falcon2 = new VerticalHopper();
+
         falcon1 = new MultiUseTalonFX(30);
         falcon2 = new MultiUseTalonFX(31);
 
@@ -106,7 +109,9 @@ public class RobotContainer {
         commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
 
         commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
-
+        //if triangle is pressed hopper should run until triangle is pressed again, same for vert.hopper but with the x button
+        commandDriverController.triangle().toggleOnTrue(hopper.runHopper());
+        commandDriverController.x().toggleOnTrue(verticalHopper.runVerticalHopper());
         // reset the field-centric heading
         commandDriverController.povUp().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
