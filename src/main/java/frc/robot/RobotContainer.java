@@ -28,12 +28,23 @@ import frc.robot.commands.RunVictor;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.ToggleHubTargeting;
 import frc.robot.commands.UpdateOdoFromVision;
+import frc.robot.commands.Hopper.ReverseHopperHorizontal;
+import frc.robot.commands.Hopper.ReverseHopperVertical;
+import frc.robot.commands.Hopper.RunHopperHorizontal;
+import frc.robot.commands.Hopper.RunHopperVertical;
+import frc.robot.commands.Intake.ReverseIntake;
+import frc.robot.commands.Intake.RunIntake;
+import frc.robot.commands.Shooter.ReverseShooter;
+import frc.robot.commands.Shooter.RunShooter;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.MultiUseTalonFX;
 import frc.robot.subsystems.MultiUseTalonSRX;
 import frc.robot.subsystems.MultiUseVictor;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -61,6 +72,10 @@ public class RobotContainer {
     public final MultiUseTalonFX falcon1;
     public final MultiUseTalonFX falcon2;
 
+    public final Intake intake;
+    public final Shooter shooter;
+    public final Hopper hopper;
+
     private final SendableChooser<Command> autoChooser;
 
     private final DriveWithTransPID command = new DriveWithTransPID(drivetrain, drive);
@@ -74,6 +89,10 @@ public class RobotContainer {
 
         falcon1 = new MultiUseTalonFX(30);
         falcon2 = new MultiUseTalonFX(31);
+
+        intake = new Intake();
+        hopper = new Hopper();
+        shooter = new Shooter();
 
         configureBindings();
 
@@ -100,12 +119,24 @@ public class RobotContainer {
         commandDriverController.options().and(commandDriverController.triangle()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         commandDriverController.options().and(commandDriverController.square()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        commandDriverController.circle().whileTrue(new RunTalonSRX(talon5, 1));
-        commandDriverController.square().whileTrue(new RunVictor(victor4));
-        commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
-        commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
+        //commandDriverController.circle().whileTrue(new RunTalonSRX(talon5, 1));
+        //commandDriverController.square().whileTrue(new RunVictor(victor4));
+        //commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
+        //commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
 
-        commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
+        commandDriverController.L1().whileTrue(new RunIntake(intake));
+        commandDriverController.R1().whileTrue(new ReverseIntake(intake));
+
+        commandDriverController.R2().whileTrue(new RunShooter(shooter));
+        commandDriverController.L2().whileTrue(new ReverseShooter(shooter));
+
+        commandDriverController.triangle().whileTrue(new RunHopperVertical(hopper));
+        commandDriverController.cross().whileTrue(new ReverseHopperVertical(hopper));
+        commandDriverController.circle().whileTrue(new RunHopperHorizontal(hopper));
+        commandDriverController.square().whileTrue(new ReverseHopperHorizontal(hopper));
+
+
+        //commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
 
         // reset the field-centric heading
         commandDriverController.povUp().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
