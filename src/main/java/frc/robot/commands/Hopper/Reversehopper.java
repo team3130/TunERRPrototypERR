@@ -8,6 +8,7 @@ public class Reversehopper extends Command{
 
     public Reversehopper(Hopper hopper) {
         this.hopper = hopper;
+        addRequirements(hopper);
     }
 
     @Override

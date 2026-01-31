@@ -4,18 +4,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class Hopper extends SubsystemBase {
     private final TalonFX hoppervertical;
     private final TalonFX hopperMotor;
     private double verticalSpeed = 0.5;
-    private double hopperSpeed = 1;
+    private double hopperSpeed = 0.5;
     public Hopper() {
-        hopperMotor = new TalonFX(Constants.CAN.Talon2); // not necessary but just in case
-        hopperMotor.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast));
-        hoppervertical = new TalonFX(Constants.CAN.Talon3); // not necessary but just in case
-        hoppervertical.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast));
+        hopperMotor = new TalonFX(0); // not necessary but just in case
+        hopperMotor.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast)));
+        hoppervertical = new TalonFX(0); // not necessary but just in case
+        hoppervertical.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast)));
     }  
 
     public void runHopper() {

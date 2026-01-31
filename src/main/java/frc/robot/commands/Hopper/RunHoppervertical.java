@@ -4,16 +4,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Hopper;
 
 public class RunHoppervertical extends Command {
-    private final Hopper hoppervertical;
+    private final Hopper hopper;
 
-    public RunHoppervertical(Hopper hoppervertical) {
-        this.hoppervertical = hoppervertical;
-        addRequirements(hoppervertical);
+    public RunHoppervertical(Hopper hopper) {
+        this.hopper = hopper;
+        addRequirements(hopper);
     }
 
     @Override
     public void initialize() {
-        hoppervertical.runHoppervertical();
+        hopper.runHoppervertical();
     }
 
     @Override
@@ -21,7 +21,7 @@ public class RunHoppervertical extends Command {
     
     @Override
     public void end(boolean interrupted){
-        hoppervertical.stopHoppervertical();
+        hopper.stopHoppervertical();
     }
 
     @Override
