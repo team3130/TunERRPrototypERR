@@ -26,7 +26,7 @@ public class Shooter extends SubsystemBase{
     private TalonFX talonHood;
     private DigitalInput limitSwitch;
     private boolean limitSwitchValue = limitSwitch.get();
-    private double velocityFuel = 0.75; // m/s CHANGE FOR PERCENTAGE
+    private double velocityFuel = 0.75; // CHANGE FOR PERCENTAGE
     private double gearRatioHood = 1; //gearRatio * Code Rotations = Rotations IRL
     
 
