@@ -118,7 +118,7 @@ public class RobotContainer {
         commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
         //if triangle is pressed hopper should run until triangle is pressed again, same for vert.hopper but with the x button
         commandDriverController.triangle().whileTrue(new RunHopper(hopper));
-        commandDriverController.L2().whileTrue(new RunHoppervertical(hopper));
+        commandDriverController.cross().whileTrue(new RunHoppervertical(hopper));
         // reset the field-centric heading
         commandDriverController.povUp().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
