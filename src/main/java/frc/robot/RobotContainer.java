@@ -87,8 +87,8 @@ public class RobotContainer {
         falcon2 = new MultiUseTalonFX(31);
 
         intake = new Intake();
-        runIntake = new RunIntake();
-        reverseIntake = new ReverseIntake();
+        runIntake = new RunIntake(intake, commandDriverController);
+        reverseIntake = new ReverseIntake(intake, commandDriverController);
 
         configureBindings();
 
@@ -122,8 +122,8 @@ public class RobotContainer {
 
         commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
 
-        commandDriverController.L2().whileTrue(new RunIntake(runIntake));
-        commandDriverController.R2().whileTrue(new ReverseIntake(reverseIntake));
+        commandDriverController.L2().whileTrue(runIntake);
+        commandDriverController.R2().whileTrue(reverseIntake);
 
         // reset the field-centric heading
         commandDriverController.povUp().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));

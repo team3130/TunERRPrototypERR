@@ -16,8 +16,9 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
     private final TalonFX intake;
     private double intakeSpeed = 0.5;
-    public intake() {
+    public Intake() {
         intake = new TalonFX(Constants.CAN.Falcon);
+        intake.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
     } 
 
     public void runIntake() {

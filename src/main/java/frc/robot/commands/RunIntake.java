@@ -14,7 +14,7 @@ public class RunIntake extends Command {
   private final CommandPS5Controller controller;
   /** Creates a new RunIntake. */
   public RunIntake(Intake intake, CommandPS5Controller controller) {
-    // Use addRequirements() here to declare subsystem dependencies.
+    // Use adRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     this.controller = controller;
     addRequirements(intake);
