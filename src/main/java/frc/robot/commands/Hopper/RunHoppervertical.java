@@ -1,12 +1,12 @@
 package frc.robot.commands.Hopper;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Hoppervertical;
+import frc.robot.subsystems.Hopper;
 
 public class RunHoppervertical extends Command {
-    private final Hoppervertical hoppervertical;
+    private final Hopper hoppervertical;
 
-    public RunHoppervertical(Hoppervertical hoppervertical) {
+    public RunHoppervertical(Hopper hoppervertical) {
         this.hoppervertical = hoppervertical;
         addRequirements(hoppervertical);
     }

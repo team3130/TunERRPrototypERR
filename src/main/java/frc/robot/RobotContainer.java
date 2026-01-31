@@ -33,7 +33,6 @@ import frc.robot.commands.Hopper.RunHoppervertical;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Hopper;
-import frc.robot.subsystems.Hoppervertical;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.MultiUseTalonFX;
 import frc.robot.subsystems.MultiUseTalonSRX;
@@ -66,7 +65,7 @@ public class RobotContainer {
     public final MultiUseTalonFX falcon2;
 
     public final Hopper hopper;
-    public final Hoppervertical verticalHopper;
+    public final Hopper verticalHopper;
 
     private final SendableChooser<Command> autoChooser;
 
@@ -80,7 +79,7 @@ public class RobotContainer {
         talon5 = new MultiUseTalonSRX(5);
 
         hopper = new Hopper();
-        verticalHopper = new Hoppervertical();
+        verticalHopper = new Hopper();
 
         falcon1 = new MultiUseTalonFX(30);
         falcon2 = new MultiUseTalonFX(31);
@@ -119,7 +118,7 @@ public class RobotContainer {
         commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
         //if triangle is pressed hopper should run until triangle is pressed again, same for vert.hopper but with the x button
         commandDriverController.triangle().whileTrue(new RunHopper(hopper));
-        commandDriverController.x().whileTrue(new RunHoppervertical(verticalHopper));
+        commandDriverController.L2().whileTrue(new RunHoppervertical(hopper));
         // reset the field-centric heading
         commandDriverController.povUp().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
