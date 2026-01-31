@@ -18,8 +18,6 @@ public class Intake extends SubsystemBase {
     private double intakeSpeed = 0.5;
     public intake() {
         intake = new TalonFX(Constants.CAN.Falcon);
-        intake.configFactoryDefault();
-        intake.setInverted(true);
     } 
 
     public void runIntake() {
