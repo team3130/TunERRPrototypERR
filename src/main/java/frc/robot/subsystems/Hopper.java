@@ -26,10 +26,10 @@ public class Hopper extends SubsystemBase {
     public void reverseHopper() {
         hopperMotor.set(-hopperSpeed);
     }
-    public void runHoppervertical() {
+    public void runHopperVertical() {
         hoppervertical.set(verticalSpeed);
     } 
-    public void reverseHoppervertical() {
+    public void reverseHopperVertical() {
         hoppervertical.set(-verticalSpeed);
     }
 
@@ -37,7 +37,7 @@ public class Hopper extends SubsystemBase {
     public void stopHopper() {
         hopperMotor.set(0);
     }
-    public void stopHoppervertical() {
+    public void stopHopperVertical() {
         hoppervertical.set(0);
     }
 

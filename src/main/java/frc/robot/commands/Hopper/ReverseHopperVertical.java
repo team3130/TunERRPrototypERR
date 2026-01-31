@@ -3,10 +3,10 @@ package frc.robot.commands.Hopper;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Hopper;
 
-public class RunHoppervertical extends Command {
+public class ReverseHopperVertical extends Command{
     private final Hopper hopper;
 
-    public RunHoppervertical(Hopper hopper) {
+    public ReverseHopperVertical(Hopper hopper) {
         this.hopper = hopper;
         addRequirements(hopper);
     }
@@ -18,9 +18,9 @@ public class RunHoppervertical extends Command {
 
     @Override
     public void execute() {}
-    
+
     @Override
-    public void end(boolean interrupted){
+    public void end(boolean interrupted) {
         hopper.stopHopperVertical();
     }
 
