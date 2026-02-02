@@ -34,8 +34,9 @@ import frc.robot.commands.Hopper.RunHopperHorizontal;
 import frc.robot.commands.Hopper.RunHopperVertical;
 import frc.robot.commands.Intake.ReverseIntake;
 import frc.robot.commands.Intake.RunIntake;
-import frc.robot.commands.Shooter.ReverseShooter;
-import frc.robot.commands.Shooter.RunShooter;
+import frc.robot.commands.Shooter.Basic.ReverseShooter;
+import frc.robot.commands.Shooter.Basic.RunShooter;
+import frc.robot.commands.Shooter.PID.Rev;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Hopper;
@@ -124,11 +125,12 @@ public class RobotContainer {
         //commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
         //commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
 
-        commandDriverController.L1().whileTrue(new RunIntake(intake));
-        commandDriverController.R1().whileTrue(new ReverseIntake(intake));
+        commandDriverController.R1().whileTrue(new RunIntake(intake));
+        commandDriverController.L1().whileTrue(new ReverseIntake(intake));
 
         commandDriverController.R2().whileTrue(new RunShooter(shooter));
-        commandDriverController.L2().whileTrue(new ReverseShooter(shooter));
+        //commandDriverController.L2().whileTrue(new ReverseShooter(shooter));
+        commandDriverController.L2().onTrue(new Rev(shooter));
 
         commandDriverController.triangle().whileTrue(new RunHopperVertical(hopper));
         commandDriverController.cross().whileTrue(new ReverseHopperVertical(hopper));

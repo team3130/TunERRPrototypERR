@@ -15,12 +15,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   private final TalonFX intake;
-  private double speed = 0.1;
+  private double speed = 1;
   public Intake() {
     intake = new TalonFX(31);
     intake.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs()
         .withNeutralMode(NeutralModeValue.Coast)
-        .withInverted(InvertedValue.Clockwise_Positive)));
+        .withInverted(InvertedValue.CounterClockwise_Positive)));
   }
 
   public void runIntake() {
