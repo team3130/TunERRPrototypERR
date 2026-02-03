@@ -65,7 +65,6 @@ public class RobotContainer {
     public final MultiUseTalonFX falcon2;
 
     public final Hopper hopper;
-    public final Hopper verticalHopper;
 
     private final SendableChooser<Command> autoChooser;
 
@@ -79,7 +78,6 @@ public class RobotContainer {
         talon5 = new MultiUseTalonSRX(5);
 
         hopper = new Hopper();
-        verticalHopper = new Hopper();
 
         falcon1 = new MultiUseTalonFX(30);
         falcon2 = new MultiUseTalonFX(31);

@@ -13,7 +13,7 @@ public class RunHoppervertical extends Command {
 
     @Override
     public void initialize() {
-        hopper.reverseHopperVertical();
+        hopper.runHopperVertical();
     }
 
     @Override
