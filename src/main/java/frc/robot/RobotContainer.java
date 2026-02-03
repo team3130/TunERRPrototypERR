@@ -117,13 +117,13 @@ public class RobotContainer {
 
         commandDriverController.circle().whileTrue(new RunTalonSRX(talon5, 1));
         commandDriverController.square().whileTrue(new RunVictor(victor4));
-        commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
-        commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
+        //commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
+        //commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
 
         commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
 
-        commandDriverController.L2().whileTrue(runIntake);
-        commandDriverController.R2().whileTrue(reverseIntake);
+        commandDriverController.L1().whileTrue(runIntake);
+        commandDriverController.R1().whileTrue(reverseIntake);
 
         // reset the field-centric heading
         commandDriverController.povUp().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
