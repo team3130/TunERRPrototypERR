@@ -5,18 +5,21 @@ import frc.robot.Constants;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class Hopper extends SubsystemBase {
     private final TalonFX hoppervertical;
     private final TalonFX hopperMotor;
-    private double verticalSpeed = 0.5;
-    private double hopperSpeed = 0.5;
+    private double verticalSpeed = 0.1;
+    private double hopperSpeed = 0.8;
     public Hopper() {
         hopperMotor = new TalonFX(35); // not necessary but just in case
-        hopperMotor.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast)));
+        hopperMotor.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs()
+        .withNeutralMode(NeutralModeValue.Coast).withInverted(InvertedValue.Clockwise_Positive)));
         hoppervertical = new TalonFX(34); // not necessary but just in case
-        hoppervertical.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast)));
+        hoppervertical.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs()
+        .withNeutralMode(NeutralModeValue.Coast).withInverted(InvertedValue.CounterClockwise_Positive)));
     }  
 
     public void runHopper() {
