@@ -18,22 +18,24 @@ public class PowerBank {
         return acc;
     }
 
-    public void calculateAllowance() {
+    public double distributeMinRequest() {
+        double remainingPower = maxPower;
+        for(int i = 0; i < size; i++) {
+            PowerAccount acc = accounts[i];
+            remainingPower -= acc.getMinRequest();
+        }
+        return remainingPower;
+    }
+
+    public void calculateAllowance(double remainingPower) {
 
         double totalReq = 0;
         for(int i = 0; i < size; i++) {
             PowerAccount acc = accounts[i];
-            totalReq += acc.getMaxRequest();
+            totalReq += acc.getMaxRequest() - acc.getMinRequest();
         }
 
-        if(totalReq == 0) {
-            for(int i = 0; i < size; i++) {
-                accounts[i].setAllowance(0);
-            }
-            return;
-        }
-
-        if(totalReq <= maxPower) {
+        if(totalReq <= remainingPower) {
             for(int i = 0; i < size; i++) {
                 PowerAccount acc = accounts[i];
                 acc.setAllowance(acc.getMaxRequest());
@@ -47,11 +49,15 @@ public class PowerBank {
             totalPriority += acc.getMaxRequest() * acc.getPriority();
         }
 
+        double totalPriorityInv = 0;
         for(int i = 0; i < size; i++) {
             PowerAccount acc = accounts[i];
-            double weight = acc.getMaxRequest() * acc.getPriority();
-            double allowance = (weight / totalPriority) * maxPower;
-            acc.setAllowance(allowance);
+            totalPriorityInv += 1.0 / acc.getPriority();
+        }
+
+        for(int i = 0; i < size; i++) {
+            PowerAccount acc = accounts[i];
+            double allowance = acc.getMaxRequest() - (totalReq - remainingPower)/(acc.getPriority() * totalPriorityInv);
         }
     }
 }

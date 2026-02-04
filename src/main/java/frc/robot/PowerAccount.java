@@ -8,11 +8,11 @@ public class PowerAccount {
     private double allowance;
     private int priority;
 
-    public PowerAccount(String name, double minRequest, double maxRequest, double allowance, int priority) {
+    public PowerAccount(String name, double minRequest, double maxRequest, int priority) {
         this.name = name;
         this.minRequest = minRequest;
         this.maxRequest = maxRequest;
-        this.allowance = allowance;
+        this.allowance = 0;
         this.priority = priority;
     }
 
