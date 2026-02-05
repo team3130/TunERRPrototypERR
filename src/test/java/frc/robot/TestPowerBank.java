@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 public class TestPowerBank {
     @Test
     public void firstTest() {
-        PowerBank powerBank = new PowerBank(3);
+        PowerBank powerBank = new PowerBank();
 
         PowerAccount hungry = powerBank.openAccount("Hungry", 1);
         PowerAccount walking = powerBank.openAccount("Walking", 50);
@@ -27,7 +27,7 @@ public class TestPowerBank {
 
     @Test
     public void overPowerTest() {
-        PowerBank powerBank = new PowerBank(3);
+        PowerBank powerBank = new PowerBank();
 
         PowerAccount hungry = powerBank.openAccount("Hungry", 1);
         PowerAccount walking = powerBank.openAccount("Walking", 50);
@@ -49,7 +49,7 @@ public class TestPowerBank {
 
     @Test
     public void overPowerTest2() {
-        PowerBank powerBank = new PowerBank(3);
+        PowerBank powerBank = new PowerBank();
 
         PowerAccount hungry = powerBank.openAccount("Hungry", 1);
         PowerAccount walking = powerBank.openAccount("Walking", 50);

@@ -1,27 +1,26 @@
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PowerBank {
 
-    private PowerAccount[] accounts;
-    private int size;
+    private ArrayList<PowerAccount> accounts;
     private double maxPower = 600;
 
-    public PowerBank(int numAccounts) {
-        accounts = new PowerAccount[numAccounts];
-        size = 0;
+    public PowerBank() {
+        accounts = new ArrayList<PowerAccount>();
     }
 
     public PowerAccount openAccount(String name, int priority) {
         PowerAccount acc = new PowerAccount(name, 0, 0, priority);
-        accounts[size] = acc;
-        size++;
+        accounts.add(acc);
         return acc;
     }
 
     public double distributeMinRequest() {
         double remainingPower = maxPower;
-        for(int i = 0; i < size; i++) {
-            PowerAccount acc = accounts[i];
+        for(PowerAccount acc: accounts) {
             remainingPower -= acc.getMinRequest();
         }
         return remainingPower;
@@ -30,33 +29,28 @@ public class PowerBank {
     public void calculateAllowance(double remainingPower) {
 
         double totalReq = 0;
-        for(int i = 0; i < size; i++) {
-            PowerAccount acc = accounts[i];
+        for(PowerAccount acc: accounts) {
             totalReq += acc.getMaxRequest() - acc.getMinRequest();
         }
 
         if(totalReq <= remainingPower) {
-            for(int i = 0; i < size; i++) {
-                PowerAccount acc = accounts[i];
+            for(PowerAccount acc: accounts) {
                 acc.setAllowance(acc.getMaxRequest());
             }
             return;
         }
 
         double totalPriority = 0;
-        for(int i = 0; i < size; i++) {
-            PowerAccount acc = accounts[i];
+        for(PowerAccount acc: accounts) {
             totalPriority += acc.getMaxRequest() * acc.getPriority();
         }
 
         double totalPriorityInv = 0;
-        for(int i = 0; i < size; i++) {
-            PowerAccount acc = accounts[i];
+        for(PowerAccount acc: accounts) {
             totalPriorityInv += 1.0 / acc.getPriority();
         }
 
-        for(int i = 0; i < size; i++) {
-            PowerAccount acc = accounts[i];
+        for(PowerAccount acc: accounts) {
             double allowance = acc.getMaxRequest() - (totalReq - remainingPower)/(acc.getPriority() * totalPriorityInv);
             acc.setAllowance(allowance);
         }

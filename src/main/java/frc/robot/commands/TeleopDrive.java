@@ -22,7 +22,7 @@ public class TeleopDrive extends Command {
   private final double maxSpeed;
   private final double maxAngularRate;
   private final SwerveRequest.FieldCentric drive;
-  private final PowerBank powerBank = new PowerBank(6);
+  private final PowerBank powerBank = new PowerBank();
   private Translation2d hubVector = new Translation2d(3.9, 0);
   private final PIDController pidController;
   /** Creates a new TeleopDrive. */
