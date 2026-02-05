@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Hopper extends SubsystemBase {
   private final TalonFX verticalHopper;
   private final TalonFX horizontalHopper;
-  private double verticalSpeed = 0.1;
+  private double verticalSpeed = 0.7;
   private double horizontalSpeed = 0.8;
   /** Creates a new Hopper. */
   public Hopper() {

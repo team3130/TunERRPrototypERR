@@ -14,7 +14,7 @@ public class ReverseHopperVertical extends Command {
   public ReverseHopperVertical(Hopper hopper) {
     this.hopper = hopper;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(hopper);
+    addRequirements();
   }
 
   // Called when the command is initially scheduled.

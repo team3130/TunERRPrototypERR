@@ -98,6 +98,7 @@ public class RobotContainer {
         configureBindings();
 
         SmartDashboard.putData(command);
+        SmartDashboard.putData(shooter);
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -130,7 +131,7 @@ public class RobotContainer {
 
         commandDriverController.R2().whileTrue(new RunShooter(shooter));
         //commandDriverController.L2().whileTrue(new ReverseShooter(shooter));
-        commandDriverController.L2().onTrue(new Rev(shooter));
+        commandDriverController.L2().whileTrue(new Rev(shooter));
 
         commandDriverController.triangle().whileTrue(new RunHopperVertical(hopper));
         commandDriverController.cross().whileTrue(new ReverseHopperVertical(hopper));
