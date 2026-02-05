@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.Swerve;
 import frc.robot.commands.DriveWithTransPID;
-import frc.robot.commands.UpdateOdoFromVisionCommand;
+import frc.robot.commands.UpdateOdoFromVision;
 import frc.robot.commands.Shooter.ShootForward;
 import frc.robot.commands.Shooter.ShootForwardBasic;
 import frc.robot.commands.Shooter.ShootInverted;
