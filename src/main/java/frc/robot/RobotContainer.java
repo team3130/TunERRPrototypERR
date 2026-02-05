@@ -6,6 +6,8 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.lang.ModuleLayer.Controller;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -22,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.Swerve;
 import frc.robot.commands.DriveWithTransPID;
+import frc.robot.commands.ReverseIntake;
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunTalonFX;
 import frc.robot.commands.RunTalonSRX;
 import frc.robot.commands.RunVictor;
@@ -32,6 +36,8 @@ import frc.robot.commands.Hopper.ReverseHopperVertical;
 import frc.robot.commands.Hopper.Reversehopper;
 import frc.robot.commands.Hopper.RunHopper;
 import frc.robot.commands.Hopper.RunHoppervertical;
+import frc.robot.commands.RunIntake;
+import frc.robot.commands.ReverseIntake;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Hopper;
@@ -40,6 +46,7 @@ import frc.robot.subsystems.MultiUseTalonFX;
 import frc.robot.subsystems.MultiUseTalonSRX;
 import frc.robot.subsystems.MultiUseVictor;
 import frc.robot.subsystems.VerticalHopper;
+import frc.robot.subsystems.Intake;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -69,6 +76,9 @@ public class RobotContainer {
 
     public final Hopper hopper;
     public final VerticalHopper verticalHopper;
+    private final Intake intake;
+    private final RunIntake runIntake;
+    private final ReverseIntake reverseIntake;
 
     private final SendableChooser<Command> autoChooser;
 
@@ -87,6 +97,9 @@ public class RobotContainer {
         falcon1 = new MultiUseTalonFX(30);
         falcon2 = new MultiUseTalonFX(31);
 
+        intake = new Intake();
+        runIntake = new RunIntake(intake, commandDriverController);
+        reverseIntake = new ReverseIntake(intake, commandDriverController);
 
         configureBindings();
 
@@ -125,6 +138,16 @@ public class RobotContainer {
         commandDriverController.cross().whileTrue(new RunHoppervertical(verticalHopper));
         commandDriverController.square().whileTrue(new Reversehopper(hopper));
         commandDriverController.circle().whileTrue(new ReverseHopperVertical(verticalHopper));
+        commandDriverController.circle().whileTrue(new RunTalonSRX(talon5, 1));
+        commandDriverController.square().whileTrue(new RunVictor(victor4));
+        //commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
+        //commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
+
+        //commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
+
+        commandDriverController.L1().whileTrue(runIntake);
+        commandDriverController.R1().whileTrue(reverseIntake);
+
         // reset the field-centric heading
         commandDriverController.povUp().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
