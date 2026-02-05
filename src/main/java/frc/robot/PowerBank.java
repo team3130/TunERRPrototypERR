@@ -58,6 +58,7 @@ public class PowerBank {
         for(int i = 0; i < size; i++) {
             PowerAccount acc = accounts[i];
             double allowance = acc.getMaxRequest() - (totalReq - remainingPower)/(acc.getPriority() * totalPriorityInv);
+            acc.setAllowance(allowance);
         }
     }
 }
