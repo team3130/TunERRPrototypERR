@@ -26,6 +26,11 @@ import frc.robot.Constants.Swerve;
 import frc.robot.commands.DriveWithTransPID;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.UpdateOdoFromVision;
+import frc.robot.commands.Shooter.ShootForward;
+import frc.robot.commands.Shooter.ShootForwardBasic;
+import frc.robot.commands.Shooter.ShootInverted;
+import frc.robot.commands.Shooter.ShootInvertedBasic;
 import frc.robot.commands.RunTalonFX;
 import frc.robot.commands.RunTalonSRX;
 import frc.robot.commands.RunVictor;
@@ -41,6 +46,7 @@ import frc.robot.commands.ReverseIntake;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.MultiUseTalonFX;
 import frc.robot.subsystems.MultiUseTalonSRX;
@@ -84,6 +90,8 @@ public class RobotContainer {
 
     private final DriveWithTransPID command = new DriveWithTransPID(drivetrain, drive);
 
+    private final Shooter shooter;
+
     public RobotContainer() {
         talon1 = new MultiUseTalonSRX(1);
         talon2 = new MultiUseTalonSRX(2);
@@ -101,10 +109,11 @@ public class RobotContainer {
         runIntake = new RunIntake(intake, commandDriverController);
         reverseIntake = new ReverseIntake(intake, commandDriverController);
 
-        configureBindings();
+        
+        shooter = new Shooter();
 
         SmartDashboard.putData(command);
-
+        configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
@@ -154,6 +163,11 @@ public class RobotContainer {
         //ommandDriverController.povUp().whileTrue(command);
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        commandDriverController.circle().whileTrue(new ShootForwardBasic(shooter));
+        commandDriverController.cross().whileTrue(new ShootInvertedBasic(shooter));
+        commandDriverController.R1().whileTrue(new ShootForward(shooter));
+        commandDriverController.L1().whileTrue(new ShootInverted(shooter));
     }
 
     public Command getAutonomousCommand() {
