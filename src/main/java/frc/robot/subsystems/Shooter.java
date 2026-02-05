@@ -37,22 +37,22 @@ public class Shooter extends SubsystemBase{
     
 
     //Shooter is Slot1: PID
-    private final Slot1Configs slot1Configs;
-    private final double slot1kV = 0.12; 
-    private final double slot1kA = 0.01;
-    private final double slot1kP = 0.1; 
-    private final double slot1kI = 0;
-    private final double slot1kD = 0.0;
-    private final MotionMagicVelocityVoltage m_request1;
-
-    //Hood is Slot0: PID
-    private final double slot0kP = 1; 
+    private final Slot0Configs slot0Configs;
+    private final double slot0kV = 0.12; 
+    private final double slot0kA = 0.01;
+    private final double slot0kP = 0.1; 
     private final double slot0kI = 0;
     private final double slot0kD = 0.0;
-    private final MotionMagicDutyCycle voltRequest0;
+    private final MotionMagicVelocityVoltage m_request0;
+
+    //Hood is Slot0: PID
+    private final double slot1kP = 1; 
+    private final double slot1kI = 0;
+    private final double slot1kD = 0.0;
+    private final MotionMagicDutyCycle voltRequest1;
     private final double targetVelocity = 0;
     private final double targetAcceleration = 1.2;
-    private final Slot0Configs slot0Configs;
+    private final Slot1Configs slot1Configs;
     private final TalonFXConfiguration config;
     
     //Shooter Constructer
@@ -65,11 +65,11 @@ public class Shooter extends SubsystemBase{
         talonWheelRight.setControl(new Follower(talonWheelLeft.getDeviceID(), MotorAlignmentValue.Opposed));
     
         //PID For Hood
-        voltRequest0 = new MotionMagicDutyCycle(0);
-        slot0Configs = new Slot0Configs();
-        slot0Configs.kP = slot0kP;
-        slot0Configs.kI = slot0kI;
-        slot0Configs.kD = slot0kD;
+        voltRequest1 = new MotionMagicDutyCycle(0);
+        slot1Configs = new Slot1Configs();
+        slot1Configs.kP = slot1kP;
+        slot1Configs.kI = slot1kI;
+        slot1Configs.kD = slot1kD;
         config = new TalonFXConfiguration();
         config.MotionMagic.withMotionMagicCruiseVelocity(targetVelocity).withMotionMagicAcceleration(targetAcceleration);
         config.MotorOutput.withInverted(InvertedValue.Clockwise_Positive).withNeutralMode(NeutralModeValue.Brake);
@@ -78,14 +78,14 @@ public class Shooter extends SubsystemBase{
         
         //PID for Shooter
         TalonFXConfiguration configS = new TalonFXConfiguration();
-        slot1Configs = configS.Slot1;
-        m_request1 = new MotionMagicVelocityVoltage(0);
-        slot1Configs.kA = slot1kA;
-        slot1Configs.kV = slot1kV;
-        slot1Configs.kP = slot1kP;
-        slot1Configs.kI = slot1kI;
-        slot1Configs.kD = slot1kD;
-        talonWheelLeft.getConfigurator().apply(slot1Configs);
+        slot0Configs = configS.Slot0;
+        m_request0 = new MotionMagicVelocityVoltage(0);
+        slot0Configs.kA = slot0kA;
+        slot0Configs.kV = slot0kV;
+        slot0Configs.kP = slot0kP;
+        slot0Configs.kI = slot0kI;
+        slot0Configs.kD = slot0kD;
+        talonWheelLeft.getConfigurator().apply(slot0Configs);
     }
     
     //Hood Methods
@@ -102,20 +102,20 @@ public class Shooter extends SubsystemBase{
         double angle = Math.PI/2;
         //radian
         final double rotationHood = angle/(2*Math.PI);
-        talonHood.setControl(voltRequest0.withPosition(rotationHood * gearRatioHood));
+        talonHood.setControl(voltRequest1.withPosition(rotationHood * gearRatioHood));
     }
 
     public void hoodSet0() {
-        talonHood.setControl(voltRequest0.withPosition(0));
+        talonHood.setControl(voltRequest1.withPosition(0));
     }
 
     //Shooter Methods
     public void shootForward() {
-        talonWheelLeft.setControl(m_request1.withVelocity(flyWheelSpeed));
+        talonWheelLeft.setControl(m_request0.withVelocity(flyWheelSpeed));
     }
 
     public void shootInverted() {
-        talonWheelLeft.setControl(m_request1.withVelocity(-flyWheelSpeed));
+        talonWheelLeft.setControl(m_request0.withVelocity(-flyWheelSpeed));
     }
 
 
