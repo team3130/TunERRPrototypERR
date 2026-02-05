@@ -15,9 +15,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
     private final TalonFX intake;
-    private double intakeSpeed = 0.5;
+    private double intakeSpeed = 1.0;
     public Intake() {
-        intake = new TalonFX(Constants.CAN.Falcon);
+        intake = new TalonFX(31);
         intake.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
     } 
 

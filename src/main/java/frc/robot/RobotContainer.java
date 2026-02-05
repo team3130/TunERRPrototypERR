@@ -120,7 +120,7 @@ public class RobotContainer {
         //commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
         //commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
 
-        commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
+        //commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
 
         commandDriverController.L1().whileTrue(runIntake);
         commandDriverController.R1().whileTrue(reverseIntake);

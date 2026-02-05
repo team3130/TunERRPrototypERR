@@ -37,6 +37,6 @@ public class ReverseIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !controller.L2().getAsBoolean(); // placeholder
+    return false;
   }
 }
