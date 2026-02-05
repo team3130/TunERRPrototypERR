@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.configs.TalonFXSConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
@@ -30,7 +32,7 @@ public class Shooter extends SubsystemBase{
     private final TalonFX talonWheelRight;
     private final TalonFX talonHood;
     private final DigitalInput limitSwitch;
-    private final double flyWheelSpeed = 0.75; // CHANGE FOR PERCENTAGE
+    private final double flyWheelSpeed = 1; // CHANGE FOR PERCENTAGE
     private final double gearRatioHood = 1; //gearRatio * Code Rotations = Rotations IRL
     
 
@@ -47,8 +49,6 @@ public class Shooter extends SubsystemBase{
     private final double slot0kP = 1; 
     private final double slot0kI = 0;
     private final double slot0kD = 0.0;
-
-    //MagicMotion Stuff for Hood
     private final MotionMagicDutyCycle voltRequest0;
     private final double targetVelocity = 0;
     private final double targetAcceleration = 1.2;
@@ -77,8 +77,9 @@ public class Shooter extends SubsystemBase{
         
         
         //PID for Shooter
+        TalonFXConfiguration configS = new TalonFXConfiguration();
+        slot1Configs = configS.Slot1;
         m_request1 = new MotionMagicVelocityVoltage(0);
-        slot1Configs = new Slot1Configs();
         slot1Configs.kA = slot1kA;
         slot1Configs.kV = slot1kV;
         slot1Configs.kP = slot1kP;
@@ -87,10 +88,12 @@ public class Shooter extends SubsystemBase{
         talonWheelLeft.getConfigurator().apply(slot1Configs);
     }
     
+    //Hood Methods
     //Set Angle to Zero
     public void angleZero() {
         if (limitSwitch.get()) {
             talonHood.setPosition(90);
+            angle = 90;
         }
     }
 
@@ -106,6 +109,7 @@ public class Shooter extends SubsystemBase{
         talonHood.setControl(voltRequest0.withPosition(0));
     }
 
+    //Shooter Methods
     public void shootForward() {
         talonWheelLeft.setControl(m_request1.withVelocity(flyWheelSpeed));
     }
@@ -123,6 +127,7 @@ public class Shooter extends SubsystemBase{
         talonWheelLeft.set(flyWheelSpeed);
     }
 
+    //Stop for all shooter commands
     public void shootStop() {
         talonWheelRight.set(0);
         talonWheelLeft.set(0);

@@ -10,7 +10,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class VerticalHopper extends SubsystemBase {
     private final TalonFX hoppervertical;
-    private double verticalSpeed = 0.1;
+    private double verticalSpeed = 0.3;
     public VerticalHopper() {
         hoppervertical = new TalonFX(34); // not necessary but just in case
         hoppervertical.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs()

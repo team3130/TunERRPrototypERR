@@ -137,8 +137,8 @@ public class RobotContainer {
 
         //commandDriverController.circle().whileTrue(new RunTalonSRX(talon5, 1));
         //commandDriverController.square().whileTrue(new RunVictor(victor4));
-        commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
-        commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
+        //commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
+        //commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
 
         //commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
         //if triangle is pressed hopper should run until triangle is pressed again, same for vert.hopper but with the x button
@@ -147,8 +147,8 @@ public class RobotContainer {
         commandDriverController.cross().whileTrue(new RunHoppervertical(verticalHopper));
         commandDriverController.square().whileTrue(new Reversehopper(hopper));
         commandDriverController.circle().whileTrue(new ReverseHopperVertical(verticalHopper));
-        commandDriverController.circle().whileTrue(new RunTalonSRX(talon5, 1));
-        commandDriverController.square().whileTrue(new RunVictor(victor4));
+        //commandDriverController.circle().whileTrue(new RunTalonSRX(talon5, 1));
+        //commandDriverController.square().whileTrue(new RunVictor(victor4));
         //commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
         //commandDriverController.L1().whileTrue(new RunTalonFX(falcon2, 1));
 
@@ -164,10 +164,10 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        commandDriverController.circle().whileTrue(new ShootForwardBasic(shooter));
-        commandDriverController.cross().whileTrue(new ShootInvertedBasic(shooter));
-        commandDriverController.R1().whileTrue(new ShootForward(shooter));
-        commandDriverController.L1().whileTrue(new ShootInverted(shooter));
+        commandDriverController.R2().whileTrue(new ShootForwardBasic(shooter));
+        commandDriverController.L2().whileTrue(new ShootInvertedBasic(shooter));
+        //commandDriverController.R1().whileTrue(new ShootForward(shooter));
+        //commandDriverController.L1().whileTrue(new ShootInverted(shooter));
     }
 
     public Command getAutonomousCommand() {
