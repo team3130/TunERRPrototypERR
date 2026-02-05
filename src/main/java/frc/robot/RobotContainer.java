@@ -120,6 +120,7 @@ public class RobotContainer {
 
         //commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
         //if triangle is pressed hopper should run until triangle is pressed again, same for vert.hopper but with the x button
+        //wrong
         commandDriverController.triangle().whileTrue(new RunHopper(hopper));
         commandDriverController.cross().whileTrue(new RunHoppervertical(verticalHopper));
         commandDriverController.square().whileTrue(new Reversehopper(hopper));
