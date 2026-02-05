@@ -18,7 +18,7 @@ public class TestPowerBank {
         important.setMinRequest(30);
         important.setMaxequest(30);
 
-        powerBank.calculateAllowance(powerBank.distributeMinRequest());
+        powerBank.calculateAllowance(powerBank.findNonzeroOverflow());
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Walking Allowance: " + walking.getAllowance());
@@ -40,7 +40,7 @@ public class TestPowerBank {
         important.setMinRequest(30);
         important.setMaxequest(30);
 
-        powerBank.calculateAllowance(powerBank.distributeMinRequest());
+        powerBank.calculateAllowance(powerBank.findNonzeroOverflow());
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Walking Allowance: " + walking.getAllowance());
@@ -60,9 +60,9 @@ public class TestPowerBank {
         walking.setMinRequest(20);
         walking.setMaxequest(100);
         important.setMinRequest(30);
-        important.setMaxequest(30.1);
+        important.setMaxequest(30.3);
 
-        powerBank.calculateAllowance(powerBank.distributeMinRequest());
+        powerBank.calculateAllowance(powerBank.findNonzeroOverflow());
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Walking Allowance: " + walking.getAllowance());

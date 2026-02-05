@@ -5,8 +5,9 @@ import java.util.List;
 
 public class PowerBank {
 
-    private ArrayList<PowerAccount> accounts;
-    private double maxPower = 600;
+    private final ArrayList<PowerAccount> accounts;
+    private final double maxPower = 600;
+    private final double deadband = -0.01;
 
     public PowerBank() {
         accounts = new ArrayList<PowerAccount>();
@@ -18,41 +19,48 @@ public class PowerBank {
         return acc;
     }
 
-    public double distributeMinRequest() {
-        double remainingPower = maxPower;
+    public ArrayList<PowerAccount> findNonzeroOverflow() {
+        ArrayList<PowerAccount> nonzeroAccounts = new ArrayList<PowerAccount>();
         for(PowerAccount acc: accounts) {
-            remainingPower -= acc.getMinRequest();
+            acc.setAllowance(acc.getMinRequest());
+            if(acc.getMaxRequest() - acc.getMinRequest() > 0) {
+                nonzeroAccounts.add(acc);
+            }
         }
-        return remainingPower;
+        return nonzeroAccounts;
     }
 
-    public void calculateAllowance(double remainingPower) {
+    public void calculateAllowance(List<PowerAccount> nonzeroAccounts) {
+        double remainingPower = maxPower;
+        for(PowerAccount acc: nonzeroAccounts) {
+            remainingPower -= acc.getMinRequest();
+        }
 
         double totalReq = 0;
-        for(PowerAccount acc: accounts) {
+        for(PowerAccount acc: nonzeroAccounts) {
             totalReq += acc.getMaxRequest() - acc.getMinRequest();
         }
 
         if(totalReq <= remainingPower) {
-            for(PowerAccount acc: accounts) {
+            for(PowerAccount acc: nonzeroAccounts) {
                 acc.setAllowance(acc.getMaxRequest());
             }
             return;
         }
 
-        double totalPriority = 0;
-        for(PowerAccount acc: accounts) {
-            totalPriority += acc.getMaxRequest() * acc.getPriority();
-        }
-
         double totalPriorityInv = 0;
-        for(PowerAccount acc: accounts) {
+        for(PowerAccount acc: nonzeroAccounts) {
             totalPriorityInv += 1.0 / acc.getPriority();
         }
 
-        for(PowerAccount acc: accounts) {
-            double allowance = acc.getMaxRequest() - (totalReq - remainingPower)/(acc.getPriority() * totalPriorityInv);
-            acc.setAllowance(allowance);
+        for(PowerAccount acc: nonzeroAccounts) {
+            double allowance = acc.getMaxRequest() - acc.getMinRequest() - (totalReq - remainingPower)/(acc.getPriority() * totalPriorityInv);
+            if(allowance < deadband) {
+                nonzeroAccounts.remove(acc);
+                calculateAllowance(nonzeroAccounts);
+                return;
+            }
+            acc.setAllowance(allowance + acc.getMinRequest());
         }
     }
 }
