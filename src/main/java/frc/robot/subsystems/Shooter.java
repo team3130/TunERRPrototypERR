@@ -58,9 +58,9 @@ public class Shooter extends SubsystemBase{
     //Shooter Constructer
     public Shooter() {
         //Robot CAN ID
-        talonHood = new TalonFX(3);
-        talonWheelLeft = new TalonFX(0);
-        talonWheelRight = new TalonFX(1);
+        talonHood = new TalonFX(0);
+        talonWheelLeft = new TalonFX(33);
+        talonWheelRight = new TalonFX(32);
         this.limitSwitch = null;
         talonWheelRight.setControl(new Follower(talonWheelLeft.getDeviceID(), MotorAlignmentValue.Opposed));
     
@@ -77,7 +77,7 @@ public class Shooter extends SubsystemBase{
         
         
         //PID for Shooter
-        m_request1 = new MotionMagicVelocityVoltage(15);
+        m_request1 = new MotionMagicVelocityVoltage(0);
         slot1Configs = new Slot1Configs();
         slot1Configs.kA = slot1kA;
         slot1Configs.kV = slot1kV;
@@ -91,7 +91,6 @@ public class Shooter extends SubsystemBase{
     public void angleZero() {
         if (limitSwitch.get()) {
             talonHood.setPosition(90);
-
         }
     }
 
@@ -108,29 +107,23 @@ public class Shooter extends SubsystemBase{
     }
 
     public void shootForward() {
-        talonWheelRight.setControl(m_request1.withVelocity(flyWheelSpeed));
+        talonWheelLeft.setControl(m_request1.withVelocity(flyWheelSpeed));
     }
 
     public void shootInverted() {
-        talonWheelRight.setControl(m_request1.withVelocity(-flyWheelSpeed));
-    }
-
-    public void shootStop() {
-        talonWheelRight.setControl(m_request1.withVelocity(0));
+        talonWheelLeft.setControl(m_request1.withVelocity(-flyWheelSpeed));
     }
 
 
     public void shootForwardBasic() {
-        talonWheelRight.set(flyWheelSpeed);
         talonWheelLeft.set(-flyWheelSpeed);
     }
 
     public void shootInvertedBasic() {
-        talonWheelRight.set(-flyWheelSpeed);
         talonWheelLeft.set(flyWheelSpeed);
     }
 
-    public void shootStopBasic() {
+    public void shootStop() {
         talonWheelRight.set(0);
         talonWheelLeft.set(0);
     }
@@ -149,6 +142,6 @@ public class Shooter extends SubsystemBase{
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-      angleZero();
+      //angleZero();
     }
 }

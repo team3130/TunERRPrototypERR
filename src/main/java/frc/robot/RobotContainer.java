@@ -21,7 +21,9 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.DriveWithTransPID;
 import frc.robot.commands.UpdateOdoFromVisionCommand;
+import frc.robot.commands.Shooter.ShootForward;
 import frc.robot.commands.Shooter.ShootForwardBasic;
+import frc.robot.commands.Shooter.ShootInverted;
 import frc.robot.commands.Shooter.ShootInvertedBasic;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -53,11 +55,11 @@ public class RobotContainer {
 
     public RobotContainer() {
 
-        configureBindings();
+        
         shooter = new Shooter();
 
         SmartDashboard.putData(command);
-
+        configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
@@ -92,6 +94,8 @@ public class RobotContainer {
 
         commandDriverController.circle().whileTrue(new ShootForwardBasic(shooter));
         commandDriverController.cross().whileTrue(new ShootInvertedBasic(shooter));
+        commandDriverController.R1().whileTrue(new ShootForward(shooter));
+        commandDriverController.L1().whileTrue(new ShootInverted(shooter));
     }
 
     public Command getAutonomousCommand() {
