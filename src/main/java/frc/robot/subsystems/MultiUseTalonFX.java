@@ -13,8 +13,8 @@ import frc.robot.Constants;
 public class MultiUseTalonFX extends SubsystemBase {
   private final TalonFX talon;
   /** Creates a new ExampleSubsystem. */
-  public MultiUseTalonFX() {
-    talon = new TalonFX(Constants.CAN.Falcon, "rio");
+  public MultiUseTalonFX(int CANID) {
+    talon = new TalonFX(CANID, "rio");
     talon.getConfigurator().apply(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
   }
 
