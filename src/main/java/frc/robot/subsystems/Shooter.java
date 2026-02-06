@@ -38,12 +38,13 @@ public class Shooter extends SubsystemBase{
 
     //Shooter is Slot1: PID
     private final Slot0Configs slot0Configs;
-    private final double slot0kV = 0.12; 
-    private final double slot0kA = 0.01;
-    private final double slot0kP = 0.1; 
-    private final double slot0kI = 0;
-    private final double slot0kD = 0.0;
-    private final MotionMagicVelocityVoltage m_request0;
+    private double slot0kV = 0.12; 
+    private double slot0kA = 0.01;
+    private double slot0kP = 0.1; 
+    private double slot0kI = 0;
+    private double slot0kD = 0.0;
+    private final MotionMagicVelocityVoltage voltRequest0;
+    private final TalonFXConfiguration configS;
 
     //Hood is Slot0: PID
     private final double slot1kP = 1; 
@@ -77,9 +78,9 @@ public class Shooter extends SubsystemBase{
         
         
         //PID for Shooter
-        TalonFXConfiguration configS = new TalonFXConfiguration();
-        slot0Configs = configS.Slot0;
-        m_request0 = new MotionMagicVelocityVoltage(0);
+        configS = new TalonFXConfiguration();
+        slot0Configs = new Slot0Configs();
+        voltRequest0 = new MotionMagicVelocityVoltage(0);
         slot0Configs.kA = slot0kA;
         slot0Configs.kV = slot0kV;
         slot0Configs.kP = slot0kP;
@@ -111,11 +112,11 @@ public class Shooter extends SubsystemBase{
 
     //Shooter Methods
     public void shootForward() {
-        talonWheelLeft.setControl(m_request0.withVelocity(flyWheelSpeed));
+        talonWheelLeft.setControl(voltRequest0.withVelocity(flyWheelSpeed));
     }
 
     public void shootInverted() {
-        talonWheelLeft.setControl(m_request0.withVelocity(-flyWheelSpeed));
+        talonWheelLeft.setControl(voltRequest0.withVelocity(-flyWheelSpeed));
     }
 
 
