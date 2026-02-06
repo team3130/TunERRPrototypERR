@@ -113,6 +113,7 @@ public class RobotContainer {
         shooter = new Shooter();
 
         SmartDashboard.putData(command);
+        SmartDashboard.putData(shooter);
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -154,8 +155,8 @@ public class RobotContainer {
 
         //commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
 
-        commandDriverController.L1().whileTrue(runIntake);
-        commandDriverController.R1().whileTrue(reverseIntake);
+        commandDriverController.L1().whileTrue(new RunIntake(intake, commandDriverController));
+        commandDriverController.R1().whileTrue(new ReverseIntake(intake, commandDriverController));
 
         // reset the field-centric heading
         commandDriverController.povUp().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
@@ -166,8 +167,8 @@ public class RobotContainer {
 
         commandDriverController.R2().whileTrue(new ShootForwardBasic(shooter));
         commandDriverController.L2().whileTrue(new ShootInvertedBasic(shooter));
-        //commandDriverController.R1().whileTrue(new ShootForward(shooter));
-        //commandDriverController.L1().whileTrue(new ShootInverted(shooter));
+        //commandDriverController.R2().whileTrue(new ShootForward(shooter));
+        //commandDriverController.L2().whileTrue(new ShootInverted(shooter));
     }
 
     public Command getAutonomousCommand() {

@@ -15,7 +15,9 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -36,7 +38,7 @@ public class Shooter extends SubsystemBase{
     private final double gearRatioHood = 1; //gearRatio * Code Rotations = Rotations IRL
     
 
-    //Shooter is Slot1: PID
+    //Shooter is Slot: PID
     private final Slot0Configs slot0Configs;
     private double slot0kV = 0.12; 
     private double slot0kA = 0.01;
@@ -46,13 +48,13 @@ public class Shooter extends SubsystemBase{
     private final MotionMagicVelocityVoltage voltRequest0;
     private final TalonFXConfiguration configS;
 
-    //Hood is Slot0: PID
+    //Hood is Slot1: PID
     private final double slot1kP = 1; 
     private final double slot1kI = 0;
     private final double slot1kD = 0.0;
-    private final MotionMagicDutyCycle voltRequest1;
     private final double targetVelocity = 0;
     private final double targetAcceleration = 1.2;
+    private final MotionMagicDutyCycle voltRequest1;
     private final Slot1Configs slot1Configs;
     private final TalonFXConfiguration config;
     
@@ -78,14 +80,20 @@ public class Shooter extends SubsystemBase{
         
         
         //PID for Shooter
+<<<<<<< Updated upstream
         configS = new TalonFXConfiguration();
         slot0Configs = new Slot0Configs();
         voltRequest0 = new MotionMagicVelocityVoltage(0);
+=======
+        final TalonFXConfiguration configS = new TalonFXConfiguration();
+        slot0Configs = configS.Slot0;
+>>>>>>> Stashed changes
         slot0Configs.kA = slot0kA;
         slot0Configs.kV = slot0kV;
         slot0Configs.kP = slot0kP;
         slot0Configs.kI = slot0kI;
         slot0Configs.kD = slot0kD;
+        m_request0 = new MotionMagicVelocityVoltage(0);
         talonWheelLeft.getConfigurator().apply(slot0Configs);
     }
     
@@ -144,10 +152,19 @@ public class Shooter extends SubsystemBase{
         double part3 = Math.atan(deltaXHub / deltaXHeight);
         double radians =  0.5 * (part1 - part2 - part3);
     }
+    public double getVelocity() {
+        return talonWheelLeft.getVelocity().getValueAsDouble();
+    }
 
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
       //angleZero();
+    }
+
+    public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Shooter");
+
+        builder.addDoubleProperty("Velocity", this::getVelocity, null);
     }
 }
