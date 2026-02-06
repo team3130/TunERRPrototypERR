@@ -37,13 +37,13 @@ public class Shooter extends SubsystemBase {
 
   private double sensorToMechGearRatio = 1;
 
-  private double accelerationMetersPerSecSquared = 45;
+  private double accelerationMetersPerSecSquared = 5;
   private final double accelerationRotations = Units.radiansToRotations(accelerationMetersPerSecSquared/Units.inchesToMeters(2));
 
   private double targetVelocityMetersPerSec = 15;
   private final double targetVelocityRotations = Units.radiansToRotations(targetVelocityMetersPerSec/Units.inchesToMeters(2));
 
-  private double speed = 0.1;
+  private double speed = 1;
   /** Creates a new Shooter. */
   public Shooter() {
     rightShooter = new TalonFX(32);
@@ -133,6 +133,21 @@ public class Shooter extends SubsystemBase {
   public double getTargetVelocity() {return targetVelocityMetersPerSec;}
   public void setTargetVelocity(double value) {targetVelocityMetersPerSec = value;}
 
+  public double getProfileVelocity() {
+    double rotsPerSec = rightShooter.getClosedLoopReference().getValueAsDouble();
+    double radsPerSec = Units.rotationsToRadians(rotsPerSec);
+    double metersPerSec = radsPerSec * Units.inchesToMeters(2);
+    return metersPerSec;
+  }
+  public double getProfileAcceleration() {
+    double rotsPerSecSquared = rightShooter.getClosedLoopReferenceSlope().getValueAsDouble();
+    double radsPerSecSquared = Units.rotationsToRadians(rotsPerSecSquared);
+    double metersPerSecSquared = radsPerSecSquared * Units.inchesToMeters(2);
+    return metersPerSecSquared;
+  }
+
+  public double getStatorCurrent() {return rightShooter.getStatorCurrent().getValueAsDouble();}
+
   public double getGearRatio() {return sensorToMechGearRatio;}
   public void setGearRatio(double value) {sensorToMechGearRatio = value;}
 
@@ -144,6 +159,11 @@ public class Shooter extends SubsystemBase {
 
     builder.addDoubleProperty("Target Acceleration (m/s^2)", this::getTargetAcceleration, this::setTargetAcceleration);
     builder.addDoubleProperty("Target Velocity (m/s)", this::getTargetVelocity, this::setTargetVelocity);
+
+    builder.addDoubleProperty("Profile Velocity", this::getProfileVelocity, null);
+    builder.addDoubleProperty("Profile Acceleration", this::getProfileAcceleration, null);
+
+    builder.addDoubleProperty("Stator Current", this::getStatorCurrent, null);
 
     builder.addDoubleProperty("Sensor to Mech Gear Ratio", this::getGearRatio, this::setGearRatio);
 
