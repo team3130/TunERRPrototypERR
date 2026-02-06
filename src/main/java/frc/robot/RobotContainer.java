@@ -28,10 +28,10 @@ import frc.robot.commands.RunVictor;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.ToggleHubTargeting;
 import frc.robot.commands.UpdateOdoFromVision;
+import frc.robot.commands.Feeder.Basic.ReverseFeederBasic;
+import frc.robot.commands.Feeder.PID.RunFeeder;
 import frc.robot.commands.Hopper.ReverseHopperHorizontal;
-import frc.robot.commands.Hopper.ReverseHopperVertical;
 import frc.robot.commands.Hopper.RunHopperHorizontal;
-import frc.robot.commands.Hopper.RunHopperVertical;
 import frc.robot.commands.Intake.ReverseIntake;
 import frc.robot.commands.Intake.RunIntake;
 import frc.robot.commands.Shooter.Basic.ReverseShooter;
@@ -39,6 +39,7 @@ import frc.robot.commands.Shooter.Basic.RunShooter;
 import frc.robot.commands.Shooter.PID.Rev;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
@@ -74,8 +75,9 @@ public class RobotContainer {
     public final MultiUseTalonFX falcon2;
 
     public final Intake intake;
-    public final Shooter shooter;
     public final Hopper hopper;
+    public final Feeder feeder;
+    public final Shooter shooter;
 
     private final SendableChooser<Command> autoChooser;
 
@@ -93,12 +95,14 @@ public class RobotContainer {
 
         intake = new Intake();
         hopper = new Hopper();
+        feeder = new Feeder();
         shooter = new Shooter();
 
         configureBindings();
 
-        SmartDashboard.putData(command);
+        //SmartDashboard.putData(command);
         SmartDashboard.putData(shooter);
+        SmartDashboard.putData(feeder);
 
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -133,8 +137,9 @@ public class RobotContainer {
         //commandDriverController.L2().whileTrue(new ReverseShooter(shooter));
         commandDriverController.L2().whileTrue(new Rev(shooter));
 
-        commandDriverController.triangle().whileTrue(new RunHopperVertical(hopper));
-        commandDriverController.cross().whileTrue(new ReverseHopperVertical(hopper));
+        commandDriverController.triangle().whileTrue(new RunFeeder(feeder));
+        commandDriverController.cross().whileTrue(new ReverseFeederBasic(feeder));
+
         commandDriverController.circle().whileTrue(new RunHopperHorizontal(hopper));
         commandDriverController.square().whileTrue(new ReverseHopperHorizontal(hopper));
 

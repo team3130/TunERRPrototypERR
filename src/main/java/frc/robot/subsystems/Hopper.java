@@ -13,18 +13,11 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Hopper extends SubsystemBase {
-  private final TalonFX verticalHopper;
   private final TalonFX horizontalHopper;
-  private double verticalSpeed = 0.7;
   private double horizontalSpeed = 0.8;
   /** Creates a new Hopper. */
   public Hopper() {
-    verticalHopper = new TalonFX(34);
     horizontalHopper = new TalonFX(35);
-
-    verticalHopper.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs()
-        .withNeutralMode(NeutralModeValue.Coast)
-        .withInverted(InvertedValue.Clockwise_Positive)));
  
     horizontalHopper.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs()
         .withNeutralMode(NeutralModeValue.Coast)
@@ -41,18 +34,6 @@ public class Hopper extends SubsystemBase {
 
   public void stopHopperHorizontal() {
     horizontalHopper.set(0);
-  }
-
-    public void runHopperVertical() {
-    verticalHopper.set(verticalSpeed);
-  }
-
-  public void reverseHopperVertical() {
-    verticalHopper.set(-verticalSpeed);
-  }
-
-  public void stopHopperVertical() {
-    verticalHopper.set(0);
   }
   
   @Override
