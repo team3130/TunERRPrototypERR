@@ -80,20 +80,14 @@ public class Shooter extends SubsystemBase{
         
         
         //PID for Shooter
-<<<<<<< Updated upstream
         configS = new TalonFXConfiguration();
         slot0Configs = new Slot0Configs();
         voltRequest0 = new MotionMagicVelocityVoltage(0);
-=======
-        final TalonFXConfiguration configS = new TalonFXConfiguration();
-        slot0Configs = configS.Slot0;
->>>>>>> Stashed changes
         slot0Configs.kA = slot0kA;
         slot0Configs.kV = slot0kV;
         slot0Configs.kP = slot0kP;
         slot0Configs.kI = slot0kI;
         slot0Configs.kD = slot0kD;
-        m_request0 = new MotionMagicVelocityVoltage(0);
         talonWheelLeft.getConfigurator().apply(slot0Configs);
     }
     
