@@ -49,7 +49,7 @@ public class TeleopDrive extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    powerBank.calculateAllowance(powerBank.findNonzeroOverflow());
+    powerBank.calculateAllowance(powerBank.getAccounts());
     if(driveTrain.getHubToggle()) {
       Translation2d robotVector = driveTrain.getState().Pose.getTranslation();
       Translation2d targetVector = hubVector.minus(robotVector);

@@ -60,4 +60,8 @@ public class PowerBank {
             acc.setAllowance(extraAllowance + acc.getMinRequest());
         }
     }
+
+    public List<PowerAccount> getAccounts() {
+        return accounts;
+    }
 }

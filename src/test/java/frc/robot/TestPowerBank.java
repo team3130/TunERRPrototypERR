@@ -13,13 +13,13 @@ public class TestPowerBank {
         PowerAccount important = powerBank.openAccount("Important", 1000);
 
         hungry.setMinRequest(20);
-        hungry.setMaxequest(300);
+        hungry.setMaxRequest(300);
         walking.setMinRequest(20);
-        walking.setMaxequest(100);
+        walking.setMaxRequest(100);
         important.setMinRequest(30);
-        important.setMaxequest(30);
+        important.setMaxRequest(30);
 
-        powerBank.calculateAllowance(powerBank.findNonzeroOverflow());
+        powerBank.calculateAllowance(powerBank.getAccounts());
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Walking Allowance: " + walking.getAllowance());
@@ -37,13 +37,13 @@ public class TestPowerBank {
         PowerAccount important = powerBank.openAccount("Important", 1000);
 
         hungry.setMinRequest(20);
-        hungry.setMaxequest(700);
+        hungry.setMaxRequest(700);
         walking.setMinRequest(20);
-        walking.setMaxequest(100);
+        walking.setMaxRequest(100);
         important.setMinRequest(30);
-        important.setMaxequest(30);
+        important.setMaxRequest(30);
 
-        powerBank.calculateAllowance(powerBank.findNonzeroOverflow());
+        powerBank.calculateAllowance(powerBank.getAccounts());
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Walking Allowance: " + walking.getAllowance());
@@ -59,13 +59,13 @@ public class TestPowerBank {
         PowerAccount important = powerBank.openAccount("Important", 1000);
 
         hungry.setMinRequest(20);
-        hungry.setMaxequest(700);
+        hungry.setMaxRequest(700);
         walking.setMinRequest(20);
-        walking.setMaxequest(100);
+        walking.setMaxRequest(100);
         important.setMinRequest(30);
-        important.setMaxequest(30.3);
+        important.setMaxRequest(30.3);
 
-        powerBank.calculateAllowance(powerBank.findNonzeroOverflow());
+        powerBank.calculateAllowance(powerBank.getAccounts());
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Walking Allowance: " + walking.getAllowance());
