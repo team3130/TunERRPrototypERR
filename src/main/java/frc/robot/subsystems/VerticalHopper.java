@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants; // unnecessary, but not an issue
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -22,29 +23,38 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class VerticalHopper extends SubsystemBase {
+    private static final double WHEEL_RADIUS_INCHES = 1.0; // update if your roller radius is different
     private final TalonFX hoppervertical;
     private final MotionMagicVelocityVoltage voltRequest;
     private double verticalSpeed = 0.3;
     private double accelerationMetersPerSecSquared = 49; // m/s^2 (target linear acceleration)
-    private final double accelerationRotations =
-          Units.radiansToRotations(accelerationMetersPerSecSquared / Units.inchesToMeters(1)); // convert to rot/s^2 (angular accerelation)
 
     private double targetVelocityMetersPerSec = 11.25; // target linear velocity (m/s)
-    private final double targetVelocityRotations = Units.radiansToRotations(targetVelocityMetersPerSec / Units.inchesToMeters(1)); // convert to rot/s
+    private double kV = 0.12;
+    private double kA = 0.01;
+    private double kP = 0.2;
+    private double kI = 0.001;
+    private double kD = 0.02;
+    private final Slot0Configs config = new Slot0Configs();
+    private final TalonFXConfiguration motorConfig = new TalonFXConfiguration();
 
     public VerticalHopper() {
         hoppervertical = new TalonFX(34);
-        hoppervertical.getConfigurator().apply(new TalonFXConfiguration().withMotorOutput(new MotorOutputConfigs()
-        .withNeutralMode(NeutralModeValue.Coast).withInverted(InvertedValue.Clockwise_Positive)));
         voltRequest = new MotionMagicVelocityVoltage(0); 
         TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
+        talonFXConfigs.MotorOutput = new MotorOutputConfigs()
+        .withNeutralMode(NeutralModeValue.Coast)
+        .withInverted(InvertedValue.Clockwise_Positive);
         Slot0Configs slot0Configs = talonFXConfigs.Slot0;
-        slot0Configs.kS = 0;
-        slot0Configs.kV = 0.12;
-        slot0Configs.kA = 0.01;
-        slot0Configs.kP = 0;
-        slot0Configs.kI = 0;
-        slot0Configs.kD = 0;
+        slot0Configs.kV = kV;
+        slot0Configs.kA = kA;
+        slot0Configs.kP = kP;
+        slot0Configs.kI = kI;
+        slot0Configs.kD = kD;
+        talonFXConfigs.MotionMagic =
+        new MotionMagicConfigs().withMotionMagicAcceleration(  Units.radiansToRotations(accelerationMetersPerSecSquared / Units.inchesToMeters(1)));
+
+        hoppervertical.getConfigurator().apply(talonFXConfigs);
     }
 
     public void revAtVelocity(double velocityMetersPerSec) {
@@ -53,13 +63,15 @@ public class VerticalHopper extends SubsystemBase {
         hoppervertical.setControl(voltRequest.withVelocity(rotsPerSec)); // Motion Magic velocity target
     }
     public void rev() {
-        hoppervertical.setControl(voltRequest.withVelocity(targetVelocityRotations)); // stored target velocity
+        double radsPerSec = targetVelocityMetersPerSec / Units.inchesToMeters(1);
+        double rotsPerSec = Units.radiansToRotations(radsPerSec);
+        hoppervertical.setControl(voltRequest.withVelocity(rotsPerSec)); // stored target velocity
     }
 
     public double getVelocity() {
         double rotsPerSec = hoppervertical.getVelocity().getValueAsDouble(); // motor rot/s
         double radsPerSec = Units.rotationsToRadians(rotsPerSec); // rot/s -> rad/s
-        double metersPerSec = radsPerSec * Units.inchesToMeters(1); // v = w * r
+        double metersPerSec = radsPerSec * Units.inchesToMeters(WHEEL_RADIUS_INCHES); // v = w * r
         return metersPerSec;
     }
     public double getAcceleration() {
@@ -69,7 +81,14 @@ public class VerticalHopper extends SubsystemBase {
         return metersPerSecSquared;
     }  
     public double getTargetAcceleration() {return accelerationMetersPerSecSquared;} // m/s^2 target accel
-    public void setTargetAcceleration(double value) {accelerationMetersPerSecSquared = value;} // update target accel
+    public void setTargetAcceleration(double value) {
+        accelerationMetersPerSecSquared = value;
+        MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
+            .withMotionMagicAcceleration(
+                Units.radiansToRotations(
+                    accelerationMetersPerSecSquared / Units.inchesToMeters(1)));
+        hoppervertical.getConfigurator().apply(motionMagicConfigs);
+    } // update target accel
 
     public double getTargetVelocity() {return targetVelocityMetersPerSec;} // m/s target velocity
     public void setTargetVelocity(double value) {targetVelocityMetersPerSec = value;} // update target velocity
@@ -92,6 +111,41 @@ public class VerticalHopper extends SubsystemBase {
     public void setVerticalSpeed(double value) {
         verticalSpeed = value;
     }
+    public double getkV() {return kV;}
+    public double getkA() {return kA;}
+    public double getkP() {return kP;}
+    public double getkI() {return kI;}
+    public double getkD() {return kD;}
+    public void setkV(double value) {kV = value;}
+    public void setkA(double value) {kA = value;}
+    public void setkP(double value) {kP = value;}
+    public void setkI(double value) {kI = value;}
+    public void setkD(double value) {kD = value;}
+    
+    public void updatePID() {
+        config.kV = kV;
+        config.kA = kA;
+        config.kP = kP;
+        config.kI = kI;
+        config.kD = kD;
+        motorConfig.Slot0 = config;
+        hoppervertical.getConfigurator().apply(motorConfig);
+    }
+    public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("Vertical Hopper");
+
+        builder.addDoubleProperty("Velocity (m/s)", this::getVelocity, null);
+        builder.addDoubleProperty("Acceleration (m/s^2)", this::getAcceleration, null);
+
+        builder.addDoubleProperty("Target Acceleration (m/s^2)", this::getTargetAcceleration, this::setTargetAcceleration);
+        builder.addDoubleProperty("Target Velocity (m/s)", this::getTargetVelocity, this::setTargetVelocity);
+
+        builder.addDoubleProperty("kV", this::getkV, this::setkV);
+        builder.addDoubleProperty("kA", this::getkA, this::setkA);
+        builder.addDoubleProperty("kP", this::getkP, this::setkP);
+        builder.addDoubleProperty("kI", this::getkI, this::setkI);
+        builder.addDoubleProperty("kD", this::getkD, this::setkD);
+        }
 
     @Override
     public void periodic() {
