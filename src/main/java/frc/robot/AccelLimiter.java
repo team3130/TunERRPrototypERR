@@ -11,14 +11,14 @@ public class AccelLimiter {
     public final PowerAccount translationAccount;
     public final PowerAccount rotationAccount;
 
-    public AccelLimiter() {
-        driveLimiter = new SlewRateLimiter(2, -5, 0);
-        thetaLimiter = new SlewRateLimiter(0);
+    public AccelLimiter(double positiveRateLimit, double negativeRateLimit, double initialValue, double rateLimit) {
+        driveLimiter = new SlewRateLimiter(positiveRateLimit, negativeRateLimit, initialValue);
+        thetaLimiter = new SlewRateLimiter(rateLimit);
         translationAccount = PowerBank.getInstance().openAccount("Translation", 100);
         rotationAccount = PowerBank.getInstance().openAccount("Rotation", 100);
     }
 
-    public ChassisSpeeds accelLimitVectorDrive(ChassisSpeeds desiredSpeed, PowerAccount powerAccount) {
+    public ChassisSpeeds accelLimitVectorDrive(ChassisSpeeds desiredSpeed) {
         double xAxis = desiredSpeed.vxMetersPerSecond;
         double yAxis = desiredSpeed.vyMetersPerSecond;
         double rotation = desiredSpeed.omegaRadiansPerSecond;

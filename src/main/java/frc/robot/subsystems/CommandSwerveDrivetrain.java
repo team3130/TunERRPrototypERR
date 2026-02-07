@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
+import frc.robot.Constants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import org.photonvision.PhotonCamera;
 
@@ -213,6 +214,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons()));
         SmartDashboard.putNumber("X speed auton", speeds.vxMetersPerSecond);
         SmartDashboard.putNumber("Y speed auton", speeds.vyMetersPerSecond);
+    }
+
+    public ChassisSpeeds getHIDspeedsMPS(CommandPS5Controller controller) {
+        double xAxis = -controller.getLeftY();
+        double yAxis = -controller.getLeftX();
+        double rotation = -controller.getRightX();
+        xAxis = MathUtil.applyDeadband(xAxis, Constants.Swerve.kDeadband);
+        yAxis = MathUtil.applyDeadband(yAxis, Constants.Swerve.kDeadband);
+        rotation = MathUtil.applyDeadband(rotation, Constants.Swerve.kDeadband);
+        return new ChassisSpeeds(xAxis, yAxis, rotation);
     }
 
     /**
