@@ -17,7 +17,9 @@ public class RunHoppervertical extends Command {
     }
 
     @Override
-    public void execute() {}
+    public void execute() {
+        hopper.rev();
+    }
     
     @Override
     public void end(boolean interrupted){

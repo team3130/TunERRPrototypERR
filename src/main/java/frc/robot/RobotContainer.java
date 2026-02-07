@@ -101,6 +101,7 @@ public class RobotContainer {
 
         hopper = new Hopper();
         verticalHopper = new VerticalHopper();
+        SmartDashboard.putData("Vertical Hopper", verticalHopper);
 
         falcon1 = new MultiUseTalonFX(30);
         falcon2 = new MultiUseTalonFX(31);
