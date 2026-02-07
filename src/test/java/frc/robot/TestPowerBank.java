@@ -1,10 +1,11 @@
 package frc.robot;
 
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPowerBank {
     @Test
-    public void firstTest() {
+    public void simple() {
         PowerBank powerBank = new PowerBank();
 
         PowerAccount hungry = powerBank.openAccount("Hungry", 1);
@@ -23,6 +24,8 @@ public class TestPowerBank {
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Walking Allowance: " + walking.getAllowance());
         System.out.println("Important Allowance: " + important.getAllowance());
+
+        assertEquals(important.getAllowance(), 30);
     }
 
     @Test
