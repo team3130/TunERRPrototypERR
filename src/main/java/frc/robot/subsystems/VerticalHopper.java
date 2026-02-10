@@ -34,26 +34,27 @@ public class VerticalHopper extends SubsystemBase {
     private double kP = 0.00;
     private double kI = 0.00;
     private double kD = 0.00;
-    private final Slot0Configs config = new Slot0Configs();
-    private final TalonFXConfiguration motorConfig = new TalonFXConfiguration();
+    private final Slot0Configs slot0Configs;
+    private final TalonFXConfiguration motorConfig;
 
     public VerticalHopper() {
+        slot0Configs = new Slot0Configs();
         hoppervertical = new TalonFX(34);
         voltRequest = new MotionMagicVelocityVoltage(0); 
-        TalonFXConfiguration talonFXConfigs = new TalonFXConfiguration();
-        talonFXConfigs.MotorOutput = new MotorOutputConfigs()
-        .withNeutralMode(NeutralModeValue.Coast)
-        .withInverted(InvertedValue.Clockwise_Positive);
-        Slot0Configs slot0Configs = talonFXConfigs.Slot0;
         slot0Configs.kV = kV;
         slot0Configs.kA = kA;
         slot0Configs.kP = kP;
         slot0Configs.kI = kI;
         slot0Configs.kD = kD;
-        talonFXConfigs.MotionMagic =
+        motorConfig = new TalonFXConfiguration();
+        motorConfig.MotorOutput = new MotorOutputConfigs()
+        .withNeutralMode(NeutralModeValue.Coast)
+        .withInverted(InvertedValue.Clockwise_Positive);
+        motorConfig.MotionMagic =
         new MotionMagicConfigs().withMotionMagicAcceleration(  Units.radiansToRotations(accelerationMetersPerSecSquared / Units.inchesToMeters(1)));
-
-        hoppervertical.getConfigurator().apply(talonFXConfigs);
+        motorConfig.Slot0 = slot0Configs;
+        hoppervertical.getConfigurator().apply(slot0Configs);
+        hoppervertical.getConfigurator().apply(motorConfig);
     }
 
     public void revAtVelocity(double velocityMetersPerSec) {
@@ -117,12 +118,12 @@ public class VerticalHopper extends SubsystemBase {
     public void setkD(double value) {kD = value;}
     
     public void updatePID() {
-        config.kV = kV;
-        config.kA = kA;
-        config.kP = kP;
-        config.kI = kI;
-        config.kD = kD;
-        motorConfig.Slot0 = config;
+        slot0Configs.kV = kV;
+        slot0Configs.kA = kA;
+        slot0Configs.kP = kP;
+        slot0Configs.kI = kI;
+        slot0Configs.kD = kD;
+        motorConfig.Slot0 = slot0Configs;
         hoppervertical.getConfigurator().apply(motorConfig);
     }
 
