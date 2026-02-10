@@ -166,10 +166,17 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
+<<<<<<< Updated upstream
         //commandDriverController.R2().whileTrue(new ShootForwardBasic(shooter));
         //commandDriverController.L2().whileTrue(new ShootInvertedBasic(shooter));
         commandDriverController.R2().whileTrue(new ShootForward(shooter));
         commandDriverController.L2().whileTrue(new ShootInverted(shooter));
+=======
+        commandDriverController.R2().whileTrue(new ShootForwardBasic(shooter));
+        commandDriverController.L2().whileTrue(new ShootInvertedBasic(shooter));
+        //commandDriverController.R2().whileTrue(new ShootForward(shooter));
+        //commandDriverController.L2().whileTrue(new ShootInverted(shooter));
+>>>>>>> Stashed changes
     }
 
     public Command getAutonomousCommand() {
