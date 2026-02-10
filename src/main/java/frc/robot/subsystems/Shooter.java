@@ -18,10 +18,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-<<<<<<< Updated upstream
 import edu.wpi.first.math.util.Units;
-=======
->>>>>>> Stashed changes
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -58,22 +55,15 @@ public class Shooter extends SubsystemBase{
     private final MotionMagicVelocityVoltage voltRequest0;
     private final TalonFXConfiguration configM;
 
-<<<<<<< Updated upstream
     //Hood is Slot0: PID
     private final Slot1Configs slot1Configs;
-=======
     //Hood is Slot1: PID
->>>>>>> Stashed changes
     private final double slot1kP = 1; 
     private final double slot1kI = 0;
     private final double slot1kD = 0.0;
     private final double targetVelocity = 0;
     private final double targetAcceleration = 1.2;
     private final MotionMagicDutyCycle voltRequest1;
-<<<<<<< Updated upstream
-=======
-    private final Slot1Configs slot1Configs;
->>>>>>> Stashed changes
     private final TalonFXConfiguration config;
     
     //Shooter Constructer
@@ -102,18 +92,13 @@ public class Shooter extends SubsystemBase{
         voltRequest1 = new MotionMagicDutyCycle(0);
         
         //PID for Shooter
-<<<<<<< Updated upstream
-        slot0Configs = new Slot0Configs();
-=======
         final TalonFXConfiguration configS = new TalonFXConfiguration();
         slot0Configs = configS.Slot0;
->>>>>>> Stashed changes
         slot0Configs.kA = slot0kA;
         slot0Configs.kV = slot0kV;
         slot0Configs.kP = slot0kP;
         slot0Configs.kI = slot0kI;
         slot0Configs.kD = slot0kD;
-<<<<<<< Updated upstream
 
         //Motor Config and Motion Magic Shooter
         configM = new TalonFXConfiguration();
@@ -122,10 +107,6 @@ public class Shooter extends SubsystemBase{
         configM.Slot0 = slot0Configs;
         talonWheelLeft.getConfigurator().apply(configM);
         voltRequest0 = new MotionMagicVelocityVoltage(0);
-=======
-        m_request0 = new MotionMagicVelocityVoltage(0);
-        talonWheelLeft.getConfigurator().apply(slot0Configs);
->>>>>>> Stashed changes
     }
     
     //Hood Methods
@@ -237,19 +218,10 @@ public class Shooter extends SubsystemBase{
         builder.addDoubleProperty("Shooter kD", this::getShooterkD, this::setShooterkD);
 
     }
-    public double getVelocity() {
-        return talonWheelLeft.getVelocity().getValueAsDouble();
-    }
 
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
       //angleZero();
-    }
-
-    public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("Shooter");
-
-        builder.addDoubleProperty("Velocity", this::getVelocity, null);
     }
 }
