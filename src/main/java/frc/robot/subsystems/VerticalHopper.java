@@ -29,8 +29,8 @@ public class VerticalHopper extends SubsystemBase {
     private double accelerationMetersPerSecSquared = 10; // m/s^2 (target linear acceleration)
 
     private double targetVelocityMetersPerSec = 11.25; // target linear velocity (m/s)
-    private double kV = 0.00;   
-    private double kA = 0.00;
+    private double kV = 0.01;   
+    private double kA = 0.01;
     private double kP = 0.00;
     private double kI = 0.00;
     private double kD = 0.00;
@@ -68,7 +68,7 @@ public class VerticalHopper extends SubsystemBase {
     }
 
     public double getVelocity() {
-        double rotsPerSec = hoppervertical.getVelocity().getValueAsDouble(); // motor rot/s
+        double rotsPerSec = hoppervertical.getClosedLoopReference().getValueAsDouble(); // motor rot/s
         double radsPerSec = Units.rotationsToRadians(rotsPerSec); // rot/s -> rad/s
         double metersPerSec = radsPerSec * Units.inchesToMeters(1); // v = w * r
         return metersPerSec;
@@ -80,14 +80,7 @@ public class VerticalHopper extends SubsystemBase {
         return metersPerSecSquared;
     }  
     public double getTargetAcceleration() {return accelerationMetersPerSecSquared;} // m/s^2 target accel
-    public void setTargetAcceleration(double value) {
-        accelerationMetersPerSecSquared = value;
-        MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs()
-            .withMotionMagicAcceleration(
-                Units.radiansToRotations(
-                    accelerationMetersPerSecSquared / Units.inchesToMeters(1)));
-        hoppervertical.getConfigurator().apply(motionMagicConfigs);
-    } // update target accel
+    public void setTargetAcceleration(double value) {accelerationMetersPerSecSquared = value;} // update target accel
 
     public double getTargetVelocity() {return targetVelocityMetersPerSec;} // m/s target velocity
     public void setTargetVelocity(double value) {targetVelocityMetersPerSec = value;} // update target velocity
