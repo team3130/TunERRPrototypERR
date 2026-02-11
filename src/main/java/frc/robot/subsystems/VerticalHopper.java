@@ -69,7 +69,7 @@ public class VerticalHopper extends SubsystemBase {
     }
 
     public double getVelocity() {
-        double rotsPerSec = hoppervertical.getClosedLoopReference().getValueAsDouble(); // motor rot/s
+        double rotsPerSec = hoppervertical.getVelocity().getValueAsDouble(); // motor rot/s
         double radsPerSec = Units.rotationsToRadians(rotsPerSec); // rot/s -> rad/s
         double metersPerSec = radsPerSec * Units.inchesToMeters(1); // v = w * r
         return metersPerSec;
@@ -109,8 +109,18 @@ public class VerticalHopper extends SubsystemBase {
     public double getkP() {return kP;}
     public double getkI() {return kI;}
     public double getkD() {return kD;}
-    public double getProfileVelocity() {return targetVelocityMetersPerSec;}
-    public double getProfileAcceleration() {return accelerationMetersPerSecSquared;}
+    public double getProfileVelocity() {
+        double rotsPerSec = hoppervertical.getClosedLoopReference().getValueAsDouble(); // motor rot/s
+        double radsPerSec = Units.rotationsToRadians(rotsPerSec); // rot/s -> rad/s
+        double metersPerSec = radsPerSec * Units.inchesToMeters(1); // v = w * r
+        return metersPerSec;
+    }
+    public double getProfileAcceleration() {
+        double rotsPerSecSquared = hoppervertical.getClosedLoopReferenceSlope().getValueAsDouble(); // motor rot/s^2
+        double radsPerSecSquared = Units.rotationsToRadians(rotsPerSecSquared); // rot/s^2 -> rad/s^2
+        double metersPerSecSquared = radsPerSecSquared * Units.inchesToMeters(1); // a = alpha * r
+        return metersPerSecSquared;
+    }
     public void setkV(double value) {kV = value;}
     public void setkA(double value) {kA = value;}
     public void setkP(double value) {kP = value;}
