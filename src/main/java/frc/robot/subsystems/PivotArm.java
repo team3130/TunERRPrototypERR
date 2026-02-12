@@ -13,7 +13,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class PivotArm extends SubsystemBase {
   public boolean brokeBottomLimit = false;
   public boolean brokeTopLimit = false;
+
   private final TalonFX pivotArm;
+
   private double rotSpeed = 0.1;
 
   /** Creates a new PivotArm. */
@@ -25,15 +27,29 @@ public class PivotArm extends SubsystemBase {
 
   public void pivotUp(){
     pivotArm.set(rotSpeed);
+    if(brokeBottomLimit=true){
+      pivotStop();
+    }
   }
 
-  //sasd
+  
   public void pivotDown(double rotSpeed){
     pivotArm.set(-rotSpeed);
+    if(brokeTopLimit = true){
+      pivotStop();
+    }
   }
 
   public void pivotStop(){
     pivotArm.set(0);
+  }
+
+  public boolean brokeBottomLimitSwitch(){
+    return brokeBottomLimit = true;
+  }
+
+  public boolean brokeTopLimitSwitch(){
+    return brokeTopLimit = true;
   }
 
   @Override
