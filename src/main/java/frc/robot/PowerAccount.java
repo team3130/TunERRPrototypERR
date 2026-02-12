@@ -24,5 +24,5 @@ public class PowerAccount {
 
     public void setAllowance(double allowance) { this.allowance = allowance; }
     public void setMinRequest(double request) { this.minRequest = request; }
-    public void setMaxequest(double request) { this.maxRequest = request; }
+    public void setMaxRequest(double request) { this.maxRequest = request; }
 }

@@ -5,13 +5,16 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import frc.robot.AccelLimiter;
+import frc.robot.Constants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -21,6 +24,7 @@ public class TeleopDrive extends Command {
   private final double maxSpeed;
   private final double maxAngularRate;
   private final SwerveRequest.FieldCentric drive;
+  private final AccelLimiter accelLimiter;
   private Translation2d hubVector = new Translation2d(3.9, 0);
   private final PIDController pidController;
   /** Creates a new TeleopDrive. */
@@ -32,6 +36,7 @@ public class TeleopDrive extends Command {
     this.maxSpeed = maxSpeed;
     this.maxAngularRate = maxAngularRate;
     this.drive = drive;
+    accelLimiter = new AccelLimiter(2, -5, 0, 0);
     pidController = new PIDController(0.05, 0, 0);
     SmartDashboard.putData(pidController);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -50,6 +55,7 @@ public class TeleopDrive extends Command {
     if(driveTrain.getHubToggle()) {
       Translation2d robotVector = driveTrain.getState().Pose.getTranslation();
       Translation2d targetVector = hubVector.minus(robotVector);
+
       double targetAngle = targetVector.getAngle().getDegrees();
       double robotAngle = driveTrain.getState().Pose.getRotation().getDegrees();
       if(targetAngle - robotAngle > 180) {
@@ -57,11 +63,18 @@ public class TeleopDrive extends Command {
       } else if(targetAngle - robotAngle < -180) {
         targetAngle += 360;
       }
-      double angleInput = pidController.calculate(robotAngle, targetAngle);
+
+      double xAxis = -controller.getLeftY();
+      double yAxis = -controller.getLeftX();
+      xAxis = MathUtil.applyDeadband(xAxis, Constants.Swerve.kDeadband);
+      yAxis = MathUtil.applyDeadband(yAxis, Constants.Swerve.kDeadband);
+
+      ChassisSpeeds limitedSpeeds = accelLimiter.accelLimitVectorDrive(new ChassisSpeeds(xAxis, yAxis, pidController.calculate(robotAngle, targetAngle)));
       driveTrain.setControl(drive
-                .withVelocityX(driveTrain.applySingleDeadband(-controller.getLeftY(), maxSpeed))
-                .withVelocityY(driveTrain.applySingleDeadband(-controller.getLeftX(), maxSpeed))
-                .withRotationalRate(angleInput));
+              .withVelocityX(limitedSpeeds.vxMetersPerSecond)
+              .withVelocityY(limitedSpeeds.vyMetersPerSecond)
+              .withRotationalRate(limitedSpeeds.omegaRadiansPerSecond)
+      );
       } else {
       pidController.reset();
       driveTrain.setControl(driveTrain.applyDeadband(drive, controller, maxSpeed, maxAngularRate));
