@@ -29,9 +29,9 @@ public class VerticalHopper extends SubsystemBase {
     private double accelerationMetersPerSecSquared = 10; // m/s^2 (target linear acceleration)
 
     private double targetVelocityMetersPerSec = 11.25; // target linear velocity (m/s)
-    private double kV = 0.01;   
-    private double kA = 0.01;
-    private double kP = 0.00;
+    private double kV = 0.1131;   
+    private double kA = 0.00;
+    private double kP = 0.07;
     private double kI = 0.00;
     private double kD = 0.00;
     private final Slot0Configs slot0Configs;
@@ -51,8 +51,8 @@ public class VerticalHopper extends SubsystemBase {
         .withNeutralMode(NeutralModeValue.Coast)
         .withInverted(InvertedValue.Clockwise_Positive);
         motorConfig.MotionMagic =
-        new MotionMagicConfigs().withMotionMagicAcceleration(  Units.radiansToRotations(accelerationMetersPerSecSquared / Units.inchesToMeters(1)));
-        motorConfig.Slot0 = slot0Configs;
+        new MotionMagicConfigs().withMotionMagicAcceleration(Units.radiansToRotations(accelerationMetersPerSecSquared / Units.inchesToMeters(1)));
+        motorConfig.Slot0 = slot0Configs; 
         hoppervertical.getConfigurator().apply(slot0Configs);
         hoppervertical.getConfigurator().apply(motorConfig);
     }
