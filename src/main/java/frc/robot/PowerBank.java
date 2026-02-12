@@ -6,11 +6,14 @@ import java.util.List;
 public class PowerBank {
 
     private final ArrayList<PowerAccount> accounts;
+    private final ArrayList<PowerAccount> nonZeroAccounts;
     private final double maxPower = 600;
     private double remainingPower;
+    private double totalOverflow = 0;
 
     public PowerBank() {
         accounts = new ArrayList<PowerAccount>();
+        nonZeroAccounts = new ArrayList<PowerAccount>();
     }
 
     public PowerAccount openAccount(String name, int priority) {
@@ -19,9 +22,7 @@ public class PowerBank {
         return acc;
     }
 
-
-    public void calculateAllowance(List<PowerAccount> accounts) {
-        ArrayList<PowerAccount> nonzeroAccounts = new ArrayList<PowerAccount>();
+    private void calculateMinimunAllocation() {
         remainingPower = maxPower;
 
 
@@ -29,35 +30,40 @@ public class PowerBank {
             acc.setAllowance(acc.getMinRequest());
             remainingPower -= acc.getMinRequest();
             if(acc.getMaxRequest() - acc.getMinRequest() > 0) {
-                nonzeroAccounts.add(acc);
+                nonZeroAccounts.add(acc);
             }
         }
 
-        double totalOverflow = 0;
-        for(PowerAccount acc: nonzeroAccounts) {
+        for(PowerAccount acc: nonZeroAccounts) {
             totalOverflow += acc.getMaxRequest() - acc.getMinRequest();
         }
+    }
 
+    private void calculateExtraAllowance(ArrayList<PowerAccount> list) {
         if(totalOverflow <= remainingPower) {
-            for(PowerAccount acc: nonzeroAccounts) {
-                acc.setAllowance(acc.getMaxRequest());
+             for(PowerAccount acc: list) {
+             acc.setAllowance(acc.getMaxRequest());
             }
             return;
         }
-
         double totalPriorityInv = 0;
-        for(PowerAccount acc: nonzeroAccounts) {
+        for(PowerAccount acc: list) {
             totalPriorityInv += 1.0 / acc.getPriority();
         }
 
-        for(PowerAccount acc: nonzeroAccounts) {
+        for(PowerAccount acc: list) {
             double extraAllowance = acc.getMaxRequest() - acc.getMinRequest() - (totalOverflow - remainingPower)/(acc.getPriority() * totalPriorityInv);
             if(extraAllowance < 0) {
-                nonzeroAccounts.remove(acc);
-                calculateAllowance(nonzeroAccounts);
+                nonZeroAccounts.remove(acc);
+                calculateExtraAllowance(nonZeroAccounts);
                 return;
             }
             acc.setAllowance(extraAllowance + acc.getMinRequest());
         }
     }
-}
+
+        public void calculate() {
+        calculateMinimunAllocation();
+        calculateExtraAllowance(nonZeroAccounts);
+    }
+    }

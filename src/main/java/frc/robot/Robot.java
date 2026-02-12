@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private final RobotContainer m_robotContainer;
+  PowerBank powerBank = new PowerBank();
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -55,7 +56,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    powerBank.calculate();
+  }
 
   @Override
   public void teleopExit() {}
