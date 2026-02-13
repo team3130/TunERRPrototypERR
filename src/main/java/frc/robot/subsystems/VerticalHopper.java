@@ -49,7 +49,6 @@ public class VerticalHopper extends SubsystemBase {
         slot0Configs.kD = kD;
 
         motorConfig = new TalonFXConfiguration();
-<<<<<<< Updated upstream
         motorConfig.MotorOutput = new MotorOutputConfigs()
         .withNeutralMode(NeutralModeValue.Coast)
         .withInverted(InvertedValue.Clockwise_Positive);
@@ -57,11 +56,6 @@ public class VerticalHopper extends SubsystemBase {
         new MotionMagicConfigs().withMotionMagicAcceleration(Units.radiansToRotations(accelerationMetersPerSecSquared / Units.inchesToMeters(1)));
         motorConfig.Slot0 = slot0Configs; 
         hoppervertical.getConfigurator().apply(slot0Configs);
-=======
-        motorConfig.MotorOutput = new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast).withInverted(InvertedValue.Clockwise_Positive);
-        motorConfig.MotionMagic = new MotionMagicConfigs().withMotionMagicAcceleration(Units.radiansToRotations(accelerationMetersPerSecSquared / Units.inchesToMeters(1)));
-        motorConfig.Slot0 = slot0Configs;
->>>>>>> Stashed changes
         hoppervertical.getConfigurator().apply(motorConfig);
         voltRequest = new MotionMagicVelocityVoltage(0); 
     }
