@@ -13,6 +13,7 @@ public class ReverseHopperVertical extends Command{
 
     @Override
     public void initialize() {
+        hopper.updatePID();
         hopper.reverseHopperVertical();
     }
 

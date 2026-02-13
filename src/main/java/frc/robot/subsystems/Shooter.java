@@ -33,7 +33,7 @@ public class Shooter extends SubsystemBase{
     private double angle = 90;
     private double targetVelocityMetersPerSec = 15;
     private final double targetVelocityRotations = Units.radiansToRotations(targetVelocityMetersPerSec/Units.inchesToMeters(2));
-    private double accelerationMetersPerSecSquared = 45;
+    private double accelerationMetersPerSecSquared = 5;
     private final double accelerationRotations = Units.radiansToRotations(accelerationMetersPerSecSquared/Units.inchesToMeters(2));
     private final double flyWheelSpeed = 1; // CHANGE FOR PERCENTAGE
 
@@ -86,7 +86,7 @@ public class Shooter extends SubsystemBase{
         //Motor Config and Motion Magic for Hood
         config = new TalonFXConfiguration();
         config.MotorOutput.withInverted(InvertedValue.Clockwise_Positive).withNeutralMode(NeutralModeValue.Brake);
-        config.MotionMagic.withMotionMagicCruiseVelocity(targetVelocity).withMotionMagicAcceleration(targetAcceleration);
+        config.MotionMagic.withMotionMagicCruiseVelocity(targetVelocityRotations).withMotionMagicAcceleration(accelerationRotations);
         config.Slot1 = slot1Configs;
         talonLeftHood.getConfigurator().apply(config);
         voltRequest1 = new MotionMagicDutyCycle(0);
@@ -193,8 +193,9 @@ public class Shooter extends SubsystemBase{
         slot0Configs.kI = slot0kI;
         slot0Configs.kD = slot0kD;
         configM.Slot0 = slot0Configs;
+        config.MotionMagic.withMotionMagicCruiseVelocity(targetVelocityRotations).withMotionMagicAcceleration(accelerationRotations);
         talonWheelLeft.getConfigurator().apply(configM);
-      }
+    }
 
     public double getProfileAcceleration() {
         double rotsPerSecSquared = talonWheelLeft.getClosedLoopReferenceSlope().getValueAsDouble();

@@ -38,15 +38,18 @@ public class VerticalHopper extends SubsystemBase {
     private final TalonFXConfiguration motorConfig;
 
     public VerticalHopper() {
-        slot0Configs = new Slot0Configs();
-        hoppervertical = new TalonFX(34);
-        voltRequest = new MotionMagicVelocityVoltage(0); 
+        hoppervertical = new TalonFX(34); 
+        final TalonFXConfiguration configsK = new TalonFXConfiguration();
+
+        slot0Configs = configsK.Slot0;
         slot0Configs.kV = kV;
         slot0Configs.kA = kA;
         slot0Configs.kP = kP;
         slot0Configs.kI = kI;
         slot0Configs.kD = kD;
+
         motorConfig = new TalonFXConfiguration();
+<<<<<<< Updated upstream
         motorConfig.MotorOutput = new MotorOutputConfigs()
         .withNeutralMode(NeutralModeValue.Coast)
         .withInverted(InvertedValue.Clockwise_Positive);
@@ -54,7 +57,13 @@ public class VerticalHopper extends SubsystemBase {
         new MotionMagicConfigs().withMotionMagicAcceleration(Units.radiansToRotations(accelerationMetersPerSecSquared / Units.inchesToMeters(1)));
         motorConfig.Slot0 = slot0Configs; 
         hoppervertical.getConfigurator().apply(slot0Configs);
+=======
+        motorConfig.MotorOutput = new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Coast).withInverted(InvertedValue.Clockwise_Positive);
+        motorConfig.MotionMagic = new MotionMagicConfigs().withMotionMagicAcceleration(Units.radiansToRotations(accelerationMetersPerSecSquared / Units.inchesToMeters(1)));
+        motorConfig.Slot0 = slot0Configs;
+>>>>>>> Stashed changes
         hoppervertical.getConfigurator().apply(motorConfig);
+        voltRequest = new MotionMagicVelocityVoltage(0); 
     }
 
     public void revAtVelocity(double velocityMetersPerSec) {
