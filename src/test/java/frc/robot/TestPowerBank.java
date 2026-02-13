@@ -19,7 +19,7 @@ public class TestPowerBank {
         important.setMinRequest(30);
         important.setMaxRequest(30);
 
-        powerBank.calculateAllowance(powerBank.getAccounts());
+        powerBank.calculate();
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Walking Allowance: " + walking.getAllowance());
@@ -43,7 +43,7 @@ public class TestPowerBank {
         important.setMinRequest(30);
         important.setMaxRequest(30);
 
-        powerBank.calculateAllowance(powerBank.getAccounts());
+        powerBank.calculate();
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Walking Allowance: " + walking.getAllowance());
@@ -65,7 +65,7 @@ public class TestPowerBank {
         important.setMinRequest(30);
         important.setMaxRequest(30.3);
 
-        powerBank.calculateAllowance(powerBank.getAccounts());
+        powerBank.calculate();
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Walking Allowance: " + walking.getAllowance());
