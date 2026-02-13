@@ -9,7 +9,7 @@ public class PowerBank {
     private final ArrayList<PowerAccount> nonZeroAccounts;
     private final double maxPower = 600;
     private double remainingPower;
-    private double totalOverflow = 0;
+    private double totalOverflow;
 
     public PowerBank() {
         accounts = new ArrayList<PowerAccount>();
@@ -28,6 +28,7 @@ public class PowerBank {
 
     private void calculateMinimunAllocation() {
         remainingPower = maxPower;
+        totalOverflow = 0;
 
         for(PowerAccount acc: accounts) {
             acc.setAllowance(acc.getMinRequest());

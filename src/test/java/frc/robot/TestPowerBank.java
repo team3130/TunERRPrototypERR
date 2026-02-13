@@ -9,11 +9,15 @@ import org.junit.jupiter.api.BeforeAll;
 public class TestPowerBank {
         static PowerAccount hungry;
         static PowerAccount important;
+        static PowerAccount cain;
+        static PowerAccount abel;
 
     @BeforeAll
-    public void initialize(){
+    public static void initialize(){
         hungry = PowerBank.getInstance().openAccount("Hungry", 1);
         important = PowerBank.getInstance().openAccount("Important", 1000);
+        cain = PowerBank.getInstance().openAccount("cain", 10);
+        abel = PowerBank.getInstance().openAccount("abel", 10);
     }
 
     @Test
@@ -23,9 +27,15 @@ public class TestPowerBank {
         hungry.setMaxRequest(200);
         important.setMinRequest(100);
         important.setMaxRequest(100);
+        cain.setMinRequest(0);
+        cain.setMaxRequest(0);
+        abel.setMinRequest(0);
+        abel.setMaxRequest(0);
 
         PowerBank.getInstance().calculate();
 
+        System.out.println("cain Allowance: " + cain.getAllowance());
+        System.out.println("abel Allowance: " + abel.getAllowance());
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Important Allowance: " + important.getAllowance());
 
@@ -40,9 +50,15 @@ public class TestPowerBank {
         hungry.setMaxRequest(400);
         important.setMinRequest(400);
         important.setMaxRequest(400);
+        cain.setMinRequest(0);
+        cain.setMaxRequest(0);
+        abel.setMinRequest(0);
+        abel.setMaxRequest(0);
 
         PowerBank.getInstance().calculate();
 
+        System.out.println("cain Allowance: " + cain.getAllowance());
+        System.out.println("abel Allowance: " + abel.getAllowance());
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Important Allowance: " + important.getAllowance());
 
@@ -57,9 +73,15 @@ public class TestPowerBank {
         hungry.setMaxRequest(400);
         important.setMinRequest(400);
         important.setMaxRequest(400);
+        cain.setMinRequest(0);
+        cain.setMaxRequest(0);
+        abel.setMinRequest(0);
+        abel.setMaxRequest(0);
 
         PowerBank.getInstance().calculate();
 
+        System.out.println("cain Allowance: " + cain.getAllowance());
+        System.out.println("abel Allowance: " + abel.getAllowance());
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Important Allowance: " + important.getAllowance());
 
@@ -69,19 +91,25 @@ public class TestPowerBank {
 
     @Test
         public void equals() {
-
-        hungry.setMinRequest(400);
-        hungry.setMaxRequest(400);
-        important.setMinRequest(400);
-        important.setMaxRequest(400);
+        
+        hungry.setMinRequest(0);
+        hungry.setMaxRequest(0);
+        important.setMinRequest(0);
+        important.setMaxRequest(0);
+        cain.setMinRequest(0);
+        cain.setMaxRequest(400);
+        abel.setMinRequest(0);
+        abel.setMaxRequest(400);
 
         PowerBank.getInstance().calculate();
 
+        System.out.println("cain Allowance: " + cain.getAllowance());
+        System.out.println("abel Allowance: " + abel.getAllowance());
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
         System.out.println("Important Allowance: " + important.getAllowance());
 
-        assertEquals(important.getAllowance(), 400);
-        assertEquals(hungry.getAllowance(), 400);
+        assertEquals(cain.getAllowance(), 300);
+        assertEquals(abel.getAllowance(), 300);
         }
 
 
