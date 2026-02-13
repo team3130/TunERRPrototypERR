@@ -15,7 +15,7 @@ public class TestPowerBank {
         hungry = PowerBank.getInstance().openAccount("Hungry", 1);
         important = PowerBank.getInstance().openAccount("Important", 1000);
     }
-    
+
     @Test
     public void inBudget() {
 
