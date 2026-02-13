@@ -3,72 +3,86 @@ package frc.robot;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.BeforeAll;
+
+
 public class TestPowerBank {
+        static PowerAccount hungry;
+        static PowerAccount important;
+
+    @BeforeAll
+    public void initialize(){
+        hungry = PowerBank.getInstance().openAccount("Hungry", 1);
+        important = PowerBank.getInstance().openAccount("Important", 1000);
+    }
+    
     @Test
-    public void simple() {
-        PowerBank powerBank = new PowerBank();
+    public void inBudget() {
 
-        PowerAccount hungry = powerBank.openAccount("Hungry", 1);
-        PowerAccount walking = powerBank.openAccount("Walking", 50);
-        PowerAccount important = powerBank.openAccount("Important", 1000);
+        hungry.setMinRequest(0);
+        hungry.setMaxRequest(200);
+        important.setMinRequest(100);
+        important.setMaxRequest(100);
 
-        hungry.setMinRequest(20);
-        hungry.setMaxRequest(300);
-        walking.setMinRequest(20);
-        walking.setMaxRequest(100);
-        important.setMinRequest(30);
-        important.setMaxRequest(30);
-
-        powerBank.calculateAllowance(powerBank.getAccounts());
+        PowerBank.getInstance().calculate();
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
-        System.out.println("Walking Allowance: " + walking.getAllowance());
         System.out.println("Important Allowance: " + important.getAllowance());
 
-        assertEquals(important.getAllowance(), 30);
+        assertEquals(important.getAllowance(), 100, "important failed");
+        assertEquals(hungry.getAllowance(), 200, "hungry failed");
     }
 
     @Test
-    public void overPowerTest() {
-        PowerBank powerBank = new PowerBank();
+    public void limitHungry() {
 
-        PowerAccount hungry = powerBank.openAccount("Hungry", 1);
-        PowerAccount walking = powerBank.openAccount("Walking", 50);
-        PowerAccount important = powerBank.openAccount("Important", 1000);
+        hungry.setMinRequest(0);
+        hungry.setMaxRequest(400);
+        important.setMinRequest(400);
+        important.setMaxRequest(400);
 
-        hungry.setMinRequest(20);
-        hungry.setMaxRequest(700);
-        walking.setMinRequest(20);
-        walking.setMaxRequest(100);
-        important.setMinRequest(30);
-        important.setMaxRequest(30);
-
-        powerBank.calculateAllowance(powerBank.getAccounts());
+        PowerBank.getInstance().calculate();
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
-        System.out.println("Walking Allowance: " + walking.getAllowance());
         System.out.println("Important Allowance: " + important.getAllowance());
+
+        assertEquals(important.getAllowance(), 400, "important failed");
+        assertEquals(hungry.getAllowance(), 200, "hungry failed");
     }
 
     @Test
-    public void overPowerTest2() {
-        PowerBank powerBank = new PowerBank();
+        public void overBudget() {
 
-        PowerAccount hungry = powerBank.openAccount("Hungry", 1);
-        PowerAccount walking = powerBank.openAccount("Walking", 50);
-        PowerAccount important = powerBank.openAccount("Important", 1000);
+        hungry.setMinRequest(400);
+        hungry.setMaxRequest(400);
+        important.setMinRequest(400);
+        important.setMaxRequest(400);
 
-        hungry.setMinRequest(20);
-        hungry.setMaxRequest(700);
-        walking.setMinRequest(20);
-        walking.setMaxRequest(100);
-        important.setMinRequest(30);
-        important.setMaxRequest(30.3);
-
-        powerBank.calculateAllowance(powerBank.getAccounts());
+        PowerBank.getInstance().calculate();
 
         System.out.println("Hungry Allowance: " + hungry.getAllowance());
-        System.out.println("Walking Allowance: " + walking.getAllowance());
         System.out.println("Important Allowance: " + important.getAllowance());
+
+        assertEquals(important.getAllowance(), 400);
+        assertEquals(hungry.getAllowance(), 400);
     }
+
+    @Test
+        public void equals() {
+
+        hungry.setMinRequest(400);
+        hungry.setMaxRequest(400);
+        important.setMinRequest(400);
+        important.setMaxRequest(400);
+
+        PowerBank.getInstance().calculate();
+
+        System.out.println("Hungry Allowance: " + hungry.getAllowance());
+        System.out.println("Important Allowance: " + important.getAllowance());
+
+        assertEquals(important.getAllowance(), 400);
+        assertEquals(hungry.getAllowance(), 400);
+        }
+
+
 }

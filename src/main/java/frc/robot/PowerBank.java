@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PowerBank {
-    static PowerBank centralBank = new PowerBank();
+    private static PowerBank centralBank = new PowerBank();
     private final ArrayList<PowerAccount> accounts;
     private final ArrayList<PowerAccount> nonZeroAccounts;
     private final double maxPower = 600;
