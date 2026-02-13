@@ -110,6 +110,7 @@ public class RobotContainer {
         hopper = new Hopper();
         verticalHopper = new VerticalHopper();
         SmartDashboard.putData("Vertical Hopper", verticalHopper);
+        SmartDashboard.putData("Vertical Hopper", vHopperNew);
 
         falcon1 = new MultiUseTalonFX(30);
         falcon2 = new MultiUseTalonFX(31);
@@ -123,9 +124,12 @@ public class RobotContainer {
 
         SmartDashboard.putData(command);
         SmartDashboard.putData(shooter);
+        
+        SmartDashboard.putData(vHopperNew);
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
+
     }
 
     private void configureBindings() {
@@ -157,12 +161,12 @@ public class RobotContainer {
         commandDriverController.cross().whileTrue(new RunHoppervertical(verticalHopper));
         
         //NEW VHOPPER
-        commandDriverController.square().whileTrue(new setInverseSpeedBasic(vHopperNew));
-        commandDriverController.circle().whileTrue(new setSpeedBasic(vHopperNew));
+        //commandDriverController.square().whileTrue(new setInverseSpeedBasic(vHopperNew));
+        //commandDriverController.circle().whileTrue(new setSpeedBasic(vHopperNew));
 
         //NEW VHOPPER PID
-        //commandDriverController.square().whileTrue(new setPIDSpeed(vHopperNew));
-        //commandDriverController.circle().whileTrue(new setPIDInvertedSpeed(vHopperNew));
+        commandDriverController.square().whileTrue(new setPIDSpeed(vHopperNew));
+        commandDriverController.circle().whileTrue(new setPIDInvertedSpeed(vHopperNew));
 
         
         //commandDriverController.square().whileTrue(new Reversehopper(hopper));

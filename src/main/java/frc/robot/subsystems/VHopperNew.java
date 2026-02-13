@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VHopperNew extends SubsystemBase {
   private final TalonFX Vmotor;
-  private final double speedHopper = 3;
+  private final double speedHopper = 0.2;
   private final MotionMagicVelocityVoltage voltRequest;
   private double targetAccelerationMetersPerSecSquared = 10; // m/s^2 (target linear acceleration)
   private double targetAccelerationRotsPerSecond = targetAccelerationMetersPerSecSquared/((0.025)*2*Math.PI);
