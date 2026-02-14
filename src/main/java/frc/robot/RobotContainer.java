@@ -31,10 +31,10 @@ import frc.robot.commands.Shooter.ShootForward;
 import frc.robot.commands.Shooter.ShootForwardBasic;
 import frc.robot.commands.Shooter.ShootInverted;
 import frc.robot.commands.Shooter.ShootInvertedBasic;
-import frc.robot.commands.VHopperNew.VHopperBasic.setInverseSpeedBasic;
-import frc.robot.commands.VHopperNew.VHopperBasic.setSpeedBasic;
-import frc.robot.commands.VHopperNew.VHopperPID.setPIDInvertedSpeed;
-import frc.robot.commands.VHopperNew.VHopperPID.setPIDSpeed;
+//import frc.robot.commands.VHopperNew.VHopperBasic.setInverseSpeedBasic;
+///import frc.robot.commands.VHopperNew.VHopperBasic.setSpeedBasic;
+//import frc.robot.commands.VHopperNew.VHopperPID.setPIDInvertedSpeed;
+//import frc.robot.commands.VHopperNew.VHopperPID.setPIDSpeed;
 import frc.robot.commands.RunTalonFX;
 import frc.robot.commands.RunTalonSRX;
 import frc.robot.commands.RunVictor;
@@ -109,7 +109,7 @@ public class RobotContainer {
 
         hopper = new Hopper();
         verticalHopper = new VerticalHopper();
-        SmartDashboard.putData("Vertical Hopper", verticalHopper);
+        //SmartDashboard.putData("Vertical Hopper", verticalHopper);
         SmartDashboard.putData("Vertical Hopper", vHopperNew);
 
         falcon1 = new MultiUseTalonFX(30);
@@ -157,8 +157,8 @@ public class RobotContainer {
         //commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
         //if triangle is pressed hopper should run until triangle is pressed again, same for vert.hopper but with the x button
         //wrong
-        commandDriverController.triangle().whileTrue(new RunHopper(hopper));
-        commandDriverController.cross().whileTrue(new RunHoppervertical(verticalHopper));
+        //commandDriverController.triangle().whileTrue(new RunHopper(hopper));
+        //commandDriverController.cross().whileTrue(new RunHoppervertical(verticalHopper));
         
         //NEW VHOPPER
         //commandDriverController.square().whileTrue(new setInverseSpeedBasic(vHopperNew));

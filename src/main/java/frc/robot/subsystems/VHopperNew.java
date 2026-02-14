@@ -38,7 +38,7 @@ public class VHopperNew extends SubsystemBase {
   private final TalonFXConfiguration motorConfig;
 
   public VHopperNew() {
-    Vmotor = new TalonFX(34);
+    Vmotor = new TalonFX(0);
 
     slot0Configs = new Slot0Configs();
     slot0Configs.kV = kV;

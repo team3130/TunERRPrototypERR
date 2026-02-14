@@ -13,8 +13,8 @@ public class RunHoppervertical extends Command {
 
     @Override
     public void initialize() {
-        hopper.updatePID();
-        hopper.runHopperVertical();
+        //hopper.updatePID();
+        //hopper.runHopperVertical();
     }
 
     @Override
