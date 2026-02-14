@@ -31,6 +31,8 @@ import frc.robot.commands.Shooter.ShootForward;
 import frc.robot.commands.Shooter.ShootForwardBasic;
 import frc.robot.commands.Shooter.ShootInverted;
 import frc.robot.commands.Shooter.ShootInvertedBasic;
+import frc.robot.commands.VHopperNew.VHopperBasic.setInverseSpeedBasic;
+import frc.robot.commands.VHopperNew.VHopperPID.setPIDSpeed;
 //import frc.robot.commands.VHopperNew.VHopperBasic.setInverseSpeedBasic;
 ///import frc.robot.commands.VHopperNew.VHopperBasic.setSpeedBasic;
 //import frc.robot.commands.VHopperNew.VHopperPID.setPIDInvertedSpeed;
@@ -166,7 +168,7 @@ public class RobotContainer {
 
         //NEW VHOPPER PID
         commandDriverController.square().whileTrue(new setPIDSpeed(vHopperNew));
-        commandDriverController.circle().whileTrue(new setPIDInvertedSpeed(vHopperNew));
+        commandDriverController.circle().whileTrue(new setInverseSpeedBasic(vHopperNew));
 
         
         //commandDriverController.square().whileTrue(new Reversehopper(hopper));

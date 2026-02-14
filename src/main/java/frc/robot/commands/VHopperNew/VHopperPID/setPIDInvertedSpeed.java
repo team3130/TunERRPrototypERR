@@ -13,6 +13,7 @@ public class setPIDInvertedSpeed extends Command {
   private final VHopperNew VHopper;
   public setPIDInvertedSpeed(VHopperNew VHopper) {
     this.VHopper = VHopper;
+    addRequirements(VHopper);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

@@ -38,7 +38,7 @@ public class VerticalHopper extends SubsystemBase {
     private final TalonFXConfiguration motorConfig;
 
     public VerticalHopper() {
-        hoppervertical = new TalonFX(34); 
+        hoppervertical = new TalonFX(0); 
         final TalonFXConfiguration configsK = new TalonFXConfiguration();
 
         slot0Configs = configsK.Slot0;
@@ -107,6 +107,7 @@ public class VerticalHopper extends SubsystemBase {
     public void setVerticalSpeed(double value) {
         verticalSpeed = value;
     }
+    
     public double getkV() {return kV;}
     public double getkA() {return kA;}
     public double getkP() {return kP;}

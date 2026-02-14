@@ -22,23 +22,23 @@ public class VHopperNew extends SubsystemBase {
   private final TalonFX Vmotor;
   private final double speedHopper = 0.2;
   private final MotionMagicVelocityVoltage voltRequest;
-  private double targetAccelerationMetersPerSecSquared = 10; // m/s^2 (target linear acceleration)
+  private double targetAccelerationMetersPerSecSquared = 7.75; // m/s^2 (target linear acceleration)
   private double targetAccelerationRotsPerSecond = targetAccelerationMetersPerSecSquared/((0.025)*2*Math.PI);
 
   private double targetVelocityMetersPerSec = 11.25; // target linear velocity (m/s)
   private double targetVelocityRotationsPerSec = targetVelocityMetersPerSec/((0.025)*2*Math.PI);
   
-  private double kV = 0.0;   
-  private double kA = 0.00;
-  private double kP = 0.0;
-  private double kI = 0.00;
-  private double kD = 0.00;
+  private double kV = 0.11;   
+  private double kA = 0.0004;
+  private double kP = 0.01;
+  private double kI = 0.0006;
+  private double kD = 0.001;
   private final Slot0Configs slot0Configs;
   
   private final TalonFXConfiguration motorConfig;
 
   public VHopperNew() {
-    Vmotor = new TalonFX(0);
+    Vmotor = new TalonFX(34);
 
     slot0Configs = new Slot0Configs();
     slot0Configs.kV = kV;
