@@ -29,6 +29,7 @@ public class PowerBank {
     private void calculateMinimunAllocation() {
         remainingPower = maxPower;
         totalOverflow = 0;
+        nonZeroAccounts.clear();
 
         for(PowerAccount acc: accounts) {
             acc.setAllowance(acc.getMinRequest());
@@ -55,14 +56,32 @@ public class PowerBank {
             totalPriorityInv += 1.0 / acc.getPriority();
         }
 
-        for(PowerAccount acc: list) {
+        ArrayList<PowerAccount> removeList = new ArrayList<>();
+
+        for (PowerAccount acc: list) {
             double extraAllowance = acc.getMaxRequest() - acc.getMinRequest() - (totalOverflow - remainingPower)/(acc.getPriority() * totalPriorityInv);
-            if(extraAllowance < 0) {
-                nonZeroAccounts.remove(acc);
-                calculateExtraAllowance(nonZeroAccounts);
-                return;
+            if (extraAllowance < 0) {
+                removeList.add(acc);
             }
-            acc.setAllowance(extraAllowance + acc.getMinRequest());
+        }
+
+        if (!removeList.isEmpty()) {
+            list.removeAll(removeList);
+            recalcOverflow(list);
+            calculateExtraAllowance(list);
+            return;
+        }
+
+        for (PowerAccount acc: list) {
+            double extraAllowance = acc.getMaxRequest() - acc.getMinRequest() - (totalOverflow - remainingPower)/(acc.getPriority() * totalPriorityInv);
+            acc.setAllowance(acc.getMinRequest() + extraAllowance);
+        }
+    }
+
+    private void recalcOverflow(List<PowerAccount> list) {
+        totalOverflow = 0;
+        for (PowerAccount acc : list) {
+            totalOverflow += acc.getMaxRequest() - acc.getMinRequest();
         }
     }
 
@@ -70,6 +89,7 @@ public class PowerBank {
         calculateMinimunAllocation();
         calculateExtraAllowance(nonZeroAccounts);
     }
+
     public List<PowerAccount> getAccounts() {
         return accounts;
     }
