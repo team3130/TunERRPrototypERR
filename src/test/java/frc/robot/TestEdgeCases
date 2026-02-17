@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 
 
-public class TestEdgCases {
+public class TestEdgeCases {
         static PowerAccount one;
         static PowerAccount two;
         static PowerAccount three;
@@ -21,7 +21,8 @@ public class TestEdgCases {
     }
 
     @Test
-    public void martyr(){
+    public void martyr() {
+
         one.setMinRequest(0);
         one.setMaxRequest(10000);
         two.setMinRequest(0);
@@ -33,9 +34,9 @@ public class TestEdgCases {
 
         PowerBank.getInstance().calculate();
 
-        System.out.println("cain Allowance: " + one.getAllowance());
-        System.out.println("abel Allowance: " + two.getAllowance());
-        System.out.println("Hungry Allowance: " + three.getAllowance());
-        System.out.println("Important Allowance: " + four.getAllowance());
+        System.out.println("one Allowance: " + one.getAllowance());
+        System.out.println("two Allowance: " + two.getAllowance());
+        System.out.println("three Allowance: " + three.getAllowance());
+        System.out.println("four Allowance: " + four.getAllowance());
     }
 }
