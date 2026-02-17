@@ -62,6 +62,7 @@ public class PowerBank {
             double extraAllowance = acc.getMaxRequest() - acc.getMinRequest() - (totalOverflow - remainingPower)/(acc.getPriority() * totalPriorityInv);
             if (extraAllowance < 0) {
                 removeList.add(acc);
+                break;
             }
         }
 
