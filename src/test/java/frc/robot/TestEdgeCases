@@ -1,0 +1,41 @@
+package frc.robot;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeAll;
+
+
+public class TestEdgCases {
+        static PowerAccount one;
+        static PowerAccount two;
+        static PowerAccount three;
+        static PowerAccount four;
+
+    @BeforeAll
+    public static void initialize(){
+        one = PowerBank.getInstance().openAccount("one", 1);
+        two = PowerBank.getInstance().openAccount("two", 10);
+        three = PowerBank.getInstance().openAccount("three", 10);
+        four = PowerBank.getInstance().openAccount("four", 10);
+    }
+
+    @Test
+    public void martyr(){
+        one.setMinRequest(0);
+        one.setMaxRequest(10000);
+        two.setMinRequest(0);
+        two.setMaxRequest(10000);
+        three.setMinRequest(0);
+        three.setMaxRequest(10000);
+        four.setMinRequest(0);
+        four.setMaxRequest(10000);
+
+        PowerBank.getInstance().calculate();
+
+        System.out.println("cain Allowance: " + one.getAllowance());
+        System.out.println("abel Allowance: " + two.getAllowance());
+        System.out.println("Hungry Allowance: " + three.getAllowance());
+        System.out.println("Important Allowance: " + four.getAllowance());
+    }
+}

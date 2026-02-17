@@ -112,5 +112,23 @@ public class TestPowerBank {
         assertEquals(abel.getAllowance(), 300);
         }
 
+    @Test
+        public void pullAllTheStops() {
 
+        hungry.setMinRequest(0);
+        hungry.setMaxRequest(800);
+        important.setMinRequest(100);
+        important.setMaxRequest(100);
+        cain.setMinRequest(30);
+        cain.setMaxRequest(100);
+        abel.setMinRequest(30);
+        abel.setMaxRequest(100);
+
+        PowerBank.getInstance().calculate();
+
+        System.out.println("cain Allowance: " + cain.getAllowance());
+        System.out.println("abel Allowance: " + abel.getAllowance());
+        System.out.println("Hungry Allowance: " + hungry.getAllowance());
+        System.out.println("Important Allowance: " + important.getAllowance());
+        }
 }
