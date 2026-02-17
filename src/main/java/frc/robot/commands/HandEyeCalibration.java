@@ -28,13 +28,7 @@ public class HandEyeCalibration extends Command {
         this.camera = camera;
         this.drivetrain = drivetrain;
 
-        AprilTagFieldLayout layout;
-        try {
-            layout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
-        } catch (Exception e) {
-            System.out.println("Need field layout");
-            layout = new AprilTagFieldLayout(List.of(), 16.54, 8.21);
-        }
+        AprilTagFieldLayout layout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
         this.aprilTagFieldLayout = layout;
     }
 
