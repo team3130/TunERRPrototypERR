@@ -8,6 +8,8 @@ import static edu.wpi.first.units.Units.*;
 
 import java.lang.ModuleLayer.Controller;
 
+import javax.naming.AuthenticationNotSupportedException;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -32,6 +34,8 @@ import frc.robot.commands.Shooter.ShootForwardBasic;
 import frc.robot.commands.Shooter.ShootInverted;
 import frc.robot.commands.Shooter.ShootInvertedBasic;
 import frc.robot.commands.VHopperNew.VHopperBasic.setInverseSpeedBasic;
+import frc.robot.commands.VHopperNew.VHopperBasic.setSpeedBasic;
+import frc.robot.commands.VHopperNew.VHopperPID.setPIDInvertedSpeed;
 import frc.robot.commands.VHopperNew.VHopperPID.setPIDSpeed;
 //import frc.robot.commands.VHopperNew.VHopperBasic.setInverseSpeedBasic;
 ///import frc.robot.commands.VHopperNew.VHopperBasic.setSpeedBasic;
@@ -60,6 +64,7 @@ import frc.robot.subsystems.MultiUseTalonSRX;
 import frc.robot.subsystems.MultiUseVictor;
 import frc.robot.subsystems.VerticalHopper;
 import frc.robot.subsystems.Intake;
+import com.pathplanner.lib.auto.NamedCommands;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -131,7 +136,34 @@ public class RobotContainer {
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
-
+//intake
+        NamedCommands.registerCommand("Run Intake", new RunIntake(intake, commandDriverController));
+        NamedCommands.registerCommand("Reverse Intake", new ReverseIntake(intake, commandDriverController));
+//hopper
+        NamedCommands.registerCommand("Run Hopper", new RunHopper(hopper));
+        NamedCommands.registerCommand("Reverse Hopper", new Reversehopper(hopper));
+        NamedCommands.registerCommand("Run Vertical Hopper", new RunHoppervertical(verticalHopper));
+        NamedCommands.registerCommand("Reverse Vertical Hopper", new ReverseHopperVertical(verticalHopper));
+//Ansh hopper
+        NamedCommands.registerCommand("Run Vertical Hopper Basic", new setSpeedBasic(vHopperNew));
+        NamedCommands.registerCommand("Reverse Vertical Hopper Basic", new setInverseSpeedBasic(vHopperNew));
+        NamedCommands.registerCommand("Run Vertical Hopper PID", new setPIDSpeed(vHopperNew));
+        NamedCommands.registerCommand("Reverse Vertical Hopper PID", new setPIDInvertedSpeed(vHopperNew));
+//shooter
+        NamedCommands.registerCommand("Shoot Foward Basic", new ShootForwardBasic(shooter));
+        NamedCommands.registerCommand("Shoot Inverted Basic", new ShootInvertedBasic(shooter));
+        NamedCommands.registerCommand("Shoot Foward PID", new ShootForward(shooter));
+        NamedCommands.registerCommand("Shoot Inverted PID", new ShootInverted(shooter));
+//hood
+        NamedCommands.registerCommand("null", command);
+        NamedCommands.registerCommand("null", command);
+//climber
+        //NamedCommands.registerCommand("null", command);
+        //NamedCommands.registerCommand("null", command);
+        //NamedCommands.registerCommand("null", command);
+        //NamedCommands.registerCommand("null", command);
+        //NamedCommands.registerCommand("null", command);
+        //NamedCommands.registerCommand("null", command);  
     }
 
     private void configureBindings() {
@@ -199,4 +231,4 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
     }
-}
+    }
