@@ -12,6 +12,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -113,6 +114,10 @@ public class RobotContainer {
         //ommandDriverController.povUp().whileTrue(command);
 
         drivetrain.registerTelemetry(logger::telemeterize);
+    }
+
+    public void updatePose() {
+        drivetrain.updatePose();
     }
 
     public Command getAutonomousCommand() {
