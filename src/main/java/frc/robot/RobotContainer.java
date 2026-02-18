@@ -51,6 +51,10 @@ import frc.robot.commands.Hopper.ReverseHopperVertical;
 import frc.robot.commands.Hopper.Reversehopper;
 import frc.robot.commands.Hopper.RunHopper;
 import frc.robot.commands.Hopper.RunHoppervertical;
+import frc.robot.commands.IntakePivot.IntakePivotBasic.IntakeSetDownBasic;
+import frc.robot.commands.IntakePivot.IntakePivotBasic.IntakeSetUpBasic;
+import frc.robot.commands.IntakePivot.IntakePivotPID.IntakeSetDownPID;
+import frc.robot.commands.IntakePivot.IntakePivotPID.IntakeSetUpPID;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.generated.TunerConstants;
@@ -64,6 +68,8 @@ import frc.robot.subsystems.MultiUseTalonSRX;
 import frc.robot.subsystems.MultiUseVictor;
 import frc.robot.subsystems.VerticalHopper;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakePivot;
+
 import com.pathplanner.lib.auto.NamedCommands;
 
 public class RobotContainer {
@@ -105,6 +111,8 @@ public class RobotContainer {
 
     private final Shooter shooter;
 
+    private final IntakePivot pivot;
+
     public RobotContainer() {
         talon1 = new MultiUseTalonSRX(1);
         talon2 = new MultiUseTalonSRX(2);
@@ -113,6 +121,8 @@ public class RobotContainer {
         talon5 = new MultiUseTalonSRX(5);
 
         vHopperNew = new VHopperNew();
+
+        pivot = new IntakePivot();
 
         hopper = new Hopper();
         verticalHopper = new VerticalHopper();
@@ -157,6 +167,11 @@ public class RobotContainer {
 //hood
         NamedCommands.registerCommand("null", command);
         NamedCommands.registerCommand("null", command);
+//Intake Pivot
+        NamedCommands.registerCommand("Intake Set Up Basic", new IntakeSetUpBasic(pivot));
+        NamedCommands.registerCommand("Intake Set Down Basic", new IntakeSetDownBasic(pivot));
+        NamedCommands.registerCommand("Intake Set Up PID", new IntakeSetUpPID(pivot));
+        NamedCommands.registerCommand("Intake Set Down PID", new IntakeSetDownPID(pivot));
 //climber
         //NamedCommands.registerCommand("null", command);
         //NamedCommands.registerCommand("null", command);
