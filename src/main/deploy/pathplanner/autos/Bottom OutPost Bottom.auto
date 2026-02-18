@@ -1,0 +1,69 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Bottom OutPost Bottom p1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Set Down Basic"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 8.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Foward Basic"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom OutPost Bottom p2"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Vertical Hopper Basic"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Run Hopper"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

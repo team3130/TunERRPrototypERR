@@ -5,13 +5,13 @@
     "data": {
       "commands": [
         {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "path",
                 "data": {
-                  "waitTime": 15.0
+                  "pathName": "Top Depot Top"
                 }
               },
               {
@@ -19,28 +19,46 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "parallel",
+                      "type": "named",
+                      "data": {
+                        "name": "Intake Set Down Basic"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.8
+                      }
+                    },
+                    {
+                      "type": "deadline",
                       "data": {
                         "commands": [
                           {
-                            "type": "named",
+                            "type": "wait",
                             "data": {
-                              "name": "Intake Set Down Basic"
+                              "waitTime": 5.0
                             }
                           },
                           {
-                            "type": "path",
+                            "type": "named",
                             "data": {
-                              "pathName": "Top Straight Path"
+                              "name": "Run Intake"
                             }
                           }
                         ]
                       }
                     },
                     {
+                      "type": "named",
+                      "data": {
+                        "name": "Shoot Foward Basic"
+                      }
+                    },
+                    {
                       "type": "wait",
                       "data": {
-                        "waitTime": 2.0
+                        "waitTime": 3.0
                       }
                     },
                     {
@@ -50,25 +68,19 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "Run Vertical Hopper Basic"
+                              "name": "Run Hopper"
                             }
                           },
                           {
                             "type": "named",
                             "data": {
-                              "name": "Run Hopper"
+                              "name": "Run Vertical Hopper Basic"
                             }
                           }
                         ]
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot Foward Basic"
                 }
               }
             ]

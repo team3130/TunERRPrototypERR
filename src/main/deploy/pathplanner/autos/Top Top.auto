@@ -23,15 +23,15 @@
                       "data": {
                         "commands": [
                           {
-                            "type": "path",
-                            "data": {
-                              "pathName": "Straight Path"
-                            }
-                          },
-                          {
                             "type": "named",
                             "data": {
                               "name": "Intake Set Down Basic"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "Top Top"
                             }
                           }
                         ]
