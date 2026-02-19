@@ -84,9 +84,9 @@ public class SlewRateLimiter implements Sendable {
     }
 
     public double getPowerFromAcceleration(double a, double v) {
-        return inertiaConstant*a*v;
+        return Math.abs(inertiaConstant*a*v);
     }
-    public double getAccelerationFromPower(double P, double v) { return Math.min(maxAccel, P/(inertiaConstant*v)); }
+    public double getAccelerationFromPower(double P, double v) { return Math.min(maxAccel, Math.abs(P/(inertiaConstant*v))); }
     public double getMaxAccel() {
         return maxAccel;
     }

@@ -163,6 +163,7 @@ public class Shooter extends SubsystemBase{
         talonWheelRight.set(0);
         talonWheelLeft.set(0);
         slewRateLimiter.reset(0);
+        shooterAccount.setMaxRequest(0);
     }
 
     public double getVelocity() {
