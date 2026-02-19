@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Intake Path"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Intake to Alliance"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Climber Path"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Intake",
+  "choreoAuto": false
+}

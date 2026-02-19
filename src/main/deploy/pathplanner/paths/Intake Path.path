@@ -1,0 +1,124 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.4592229729729733,
+        "y": 3.932860360360361
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.5706081081081082,
+        "y": 3.932860360360361
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.204842342342343,
+        "y": 5.403671171171172
+      },
+      "prevControl": {
+        "x": 2.7252762234125507,
+        "y": 5.334854142383736
+      },
+      "nextControl": {
+        "x": 4.644042792792793,
+        "y": 5.4240990990991005
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.492770270270271,
+        "y": 6.139076576576576
+      },
+      "prevControl": {
+        "x": 6.0789242576176985,
+        "y": 5.538332364666954
+      },
+      "nextControl": {
+        "x": 6.809403153158187,
+        "y": 6.598704954958127
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.22817567568071,
+        "y": 7.170686936940109
+      },
+      "prevControl": {
+        "x": 6.660567592521617,
+        "y": 7.179696589053747
+      },
+      "nextControl": {
+        "x": 7.87165540541044,
+        "y": 7.1604729729761445
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.565236486486487,
+        "y": 4.535484234237407
+      },
+      "prevControl": {
+        "x": 7.616306306306306,
+        "y": 5.791801801801801
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.9117291414752123,
+      "rotationDegrees": -45.0
+    },
+    {
+      "waypointRelativePos": 1.7315598548972189,
+      "rotationDegrees": -45.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake Set Down Basic",
+      "waypointRelativePos": 1.500721500721501,
+      "endWaypointRelativePos": 4.0,
+      "command": null
+    },
+    {
+      "name": "Run Intake",
+      "waypointRelativePos": 1.9971139971139997,
+      "endWaypointRelativePos": 4.0,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 6.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 3.0,
+    "rotation": -92.24574256535607
+  },
+  "reversed": false,
+  "folder": "Intake",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": false
+}
