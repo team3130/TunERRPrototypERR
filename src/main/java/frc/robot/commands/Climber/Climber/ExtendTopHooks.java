@@ -1,19 +1,19 @@
-package frc.robot.commands.Climber;
+package frc.robot.commands.Climber.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 
-public class ExtendBottomHooks extends Command {
+public class ExtendTopHooks extends Command {
     private final Climber climber;
 
-    public ExtendBottomHooks(Climber climber) {
+    public ExtendTopHooks(Climber climber) {
         this.climber = climber;
         addRequirements(climber);
     }
 
     @Override
     public void initialize() {
-        climber.extendBottomHooks();
+        climber.extendTopHooks();
     }
 
     @Override

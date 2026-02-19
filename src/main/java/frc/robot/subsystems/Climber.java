@@ -17,6 +17,7 @@ public class Climber extends SubsystemBase{
     private double climberSpeed = 0.1;
     private boolean bottomHooksState;
     private boolean topHooksState;
+    private final double targetL1 = 75; //Rotations we need to test for L1 for Autons
 
     public Climber() {
         climberMotor = new TalonFX(0);
@@ -36,6 +37,14 @@ public class Climber extends SubsystemBase{
     }
     public void stopClimber() {
         climberMotor.set(0);
+    }
+
+    public double getPosition() {
+        return climberMotor.getPosition().getValueAsDouble();
+    }
+
+    public double getTargetL1() {
+        return targetL1;
     }
 
     public void extendBottomHooks() {

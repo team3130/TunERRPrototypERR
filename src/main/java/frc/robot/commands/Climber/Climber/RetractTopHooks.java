@@ -1,28 +1,24 @@
-package frc.robot.commands.Climber;
+package frc.robot.commands.Climber.Climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
 
-public class ReverseClimberMotor extends Command {
+public class RetractTopHooks extends Command {
     private final Climber climber;
 
-    public ReverseClimberMotor(Climber climber) {
+    public RetractTopHooks(Climber climber) {
         this.climber = climber;
         addRequirements(climber);
-
     }
 
+    @Override
     public void initialize() {
-        climber.reverseClimber();
+        climber.retractTopmHooks();
     }
 
-    public void execute() {
-
-    }
-
-    public void end(boolean interrupted) {
-        climber.stopClimber();
-    }
+    public void execute() {}   
+    
+    public void end(boolean interrupted) {}
 
     public boolean isFinished() {
         return false;

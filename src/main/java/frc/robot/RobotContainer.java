@@ -29,6 +29,9 @@ import frc.robot.commands.DriveWithTransPID;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.UpdateOdoFromVision;
+import frc.robot.commands.Climber.Climber.AutonClimb;
+import frc.robot.commands.Climber.Climber.ExtendTopHooks;
+import frc.robot.commands.Climber.Climber.RetractTopHooks;
 import frc.robot.commands.Shooter.ShootForward;
 import frc.robot.commands.Shooter.ShootForwardBasic;
 import frc.robot.commands.Shooter.ShootInverted;
@@ -58,6 +61,7 @@ import frc.robot.commands.IntakePivot.IntakePivotPID.IntakeSetUpPID;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.ReverseIntake;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Shooter;
@@ -104,6 +108,7 @@ public class RobotContainer {
     private final Intake intake;
     private final RunIntake runIntake;
     private final ReverseIntake reverseIntake;
+    private final Climber climber;
 
     private final SendableChooser<Command> autoChooser;
 
@@ -123,6 +128,8 @@ public class RobotContainer {
         vHopperNew = new VHopperNew();
 
         pivot = new IntakePivot();
+
+        climber = new Climber();
 
         hopper = new Hopper();
         verticalHopper = new VerticalHopper();
@@ -173,9 +180,9 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake Set Up PID", new IntakeSetUpPID(pivot));
         NamedCommands.registerCommand("Intake Set Down PID", new IntakeSetDownPID(pivot));
 //climber
-        //NamedCommands.registerCommand("null", command);
-        //NamedCommands.registerCommand("null", command);
-        //NamedCommands.registerCommand("null", command);
+        NamedCommands.registerCommand("Climber Pull Up", new AutonClimb(climber));
+        NamedCommands.registerCommand("Retract Hooks", new RetractTopHooks(climber));
+        NamedCommands.registerCommand("Extend Hooks", new ExtendTopHooks(climber));
         //NamedCommands.registerCommand("null", command);
         //NamedCommands.registerCommand("null", command);
         //NamedCommands.registerCommand("null", command);  
