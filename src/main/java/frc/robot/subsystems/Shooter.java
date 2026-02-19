@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.PowerAccount;
 import frc.robot.SlewRateLimiter;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase{
     private SlewRateLimiter slewRateLimiter;
+    public final PowerAccount shooterAccount;
 
     //For Shooting Speed, ect..
     private double deltaXHub = 8; //meters
@@ -105,7 +107,8 @@ public class Shooter extends SubsystemBase{
         voltRequest0 = new MotionMagicVelocityVoltage(0);
 
         //Slew Rate Limiter
-        slewRateLimiter = new SlewRateLimiter(accelerationRotations, -5*accelerationRotations, 0, accelerationRotations, 0.00007);
+        slewRateLimiter = new SlewRateLimiter(accelerationRotations, -accelerationRotations, 0, accelerationRotations, 0.00007);
+        shooterAccount = new PowerAccount("shooter", 0, accelerationRotations, 0);
     }
     
     //Hood Methods
@@ -146,10 +149,20 @@ public class Shooter extends SubsystemBase{
         talonWheelLeft.set(flyWheelSpeed);
     }
 
+    public void shootWithGivenPower(boolean forward) {
+        int sign = forward ? 1 : -1;
+        double powerReq = slewRateLimiter.getPowerFromAcceleration(sign*accelerationRotations, slewRateLimiter.lastValue());
+        shooterAccount.setMaxRequest(powerReq);
+        double rotAccel = slewRateLimiter.getAccelerationFromPower(shooterAccount.getAllowance(), slewRateLimiter.lastValue());
+        double newRotVel = slewRateLimiter.calculate(sign*rotAccel);
+        talonWheelLeft.set(newRotVel);
+    }
+
     //Stop for all shooter commands
     public void shootStop() {
         talonWheelRight.set(0);
         talonWheelLeft.set(0);
+        slewRateLimiter.reset(0);
     }
 
     public double getVelocity() {
