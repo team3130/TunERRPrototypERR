@@ -12,7 +12,7 @@ public class AccelLimiter {
     public final PowerAccount rotationAccount;
 
     public AccelLimiter(double positiveRateLimit, double negativeRateLimit, double initialValue, double rateLimit) {
-        driveLimiter = new SlewRateLimiter(positiveRateLimit, negativeRateLimit, initialValue);
+        driveLimiter = new SlewRateLimiter(positiveRateLimit, negativeRateLimit, initialValue, 7.875, 70.0);
         thetaLimiter = new SlewRateLimiter(rateLimit);
         translationAccount = PowerBank.getInstance().openAccount("Translation", 100);
         rotationAccount = PowerBank.getInstance().openAccount("Rotation", 100);

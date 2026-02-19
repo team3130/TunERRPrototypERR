@@ -13,18 +13,24 @@ public class SlewRateLimiter implements Sendable {
     private double negativeRateLimit;
     private double prevVal;
     private double prevTime;
-    private final double maxAccel = 7.875;
-    private final double weightConstant = 70.0;
+    private final double maxAccel;
+    private final double inertiaConstant;
 
-    public SlewRateLimiter(double positiveRateLimit, double negativeRateLimit, double initialValue) {
+    public SlewRateLimiter(double positiveRateLimit, double negativeRateLimit, double initialValue, double maxAccel, double inertiaConstant) {
         this.positiveRateLimit = positiveRateLimit;
         this.negativeRateLimit = negativeRateLimit;
         this.prevVal = initialValue;
         this.prevTime = MathSharedStore.getTimestamp();
+        this.maxAccel = maxAccel;
+        this.inertiaConstant = inertiaConstant;
     }
 
     public SlewRateLimiter(double rateLimit) {
-        this(rateLimit, -rateLimit, (double)0.0F);
+        this.positiveRateLimit = rateLimit;
+        this.negativeRateLimit = rateLimit;
+        this.prevVal = (double)0.0F;
+        this.maxAccel = 10000;
+        this.inertiaConstant = 1;
     }
 
     public double calculate(double input) {
@@ -78,9 +84,9 @@ public class SlewRateLimiter implements Sendable {
     }
 
     public double getTranslationalPowerFromAcceleration(double a, double v) {
-        return weightConstant*a*v;
+        return inertiaConstant*a*v;
     }
-    public double getTranslationalAccelerationFromPower(double P, double v) { return Math.min(maxAccel, P/(weightConstant*v)); }
+    public double getTranslationalAccelerationFromPower(double P, double v) { return Math.min(maxAccel, P/(inertiaConstant*v)); }
     public double getMaxAccel() {
         return maxAccel;
     }

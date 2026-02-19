@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import frc.robot.SlewRateLimiter;
+
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase{
+    private SlewRateLimiter slewRateLimiter;
 
     //For Shooting Speed, ect..
     private double deltaXHub = 8; //meters
@@ -100,6 +103,9 @@ public class Shooter extends SubsystemBase{
         configM.Slot0 = slot0Configs;
         talonWheelLeft.getConfigurator().apply(configM);
         voltRequest0 = new MotionMagicVelocityVoltage(0);
+
+        //Slew Rate Limiter
+        slewRateLimiter = new SlewRateLimiter(accelerationRotations, -5*accelerationRotations, 0, accelerationRotations, 0.00007);
     }
     
     //Hood Methods
