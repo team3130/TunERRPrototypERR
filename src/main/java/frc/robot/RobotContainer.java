@@ -28,6 +28,8 @@ import frc.robot.commands.RunVictor;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.ToggleHubTargeting;
 import frc.robot.commands.UpdateOdoFromVision;
+import frc.robot.commands.Climber.ExtendBottomHooks;
+import frc.robot.commands.Climber.RetractBottomHooks;
 import frc.robot.commands.Feeder.Basic.ReverseFeederBasic;
 import frc.robot.commands.Feeder.PID.RunFeeder;
 import frc.robot.commands.Hopper.ReverseHopperHorizontal;
@@ -38,6 +40,7 @@ import frc.robot.commands.Shooter.Basic.ReverseShooter;
 import frc.robot.commands.Shooter.Basic.RunShooter;
 import frc.robot.commands.Shooter.PID.Rev;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
@@ -78,6 +81,7 @@ public class RobotContainer {
     public final Hopper hopper;
     public final Feeder feeder;
     public final Shooter shooter;
+    public final Climber climber;
 
     private final SendableChooser<Command> autoChooser;
 
@@ -97,6 +101,7 @@ public class RobotContainer {
         hopper = new Hopper();
         feeder = new Feeder();
         shooter = new Shooter();
+        climber = new Climber();
 
         configureBindings();
 
@@ -142,6 +147,9 @@ public class RobotContainer {
 
         commandDriverController.circle().whileTrue(new RunHopperHorizontal(hopper));
         commandDriverController.square().whileTrue(new ReverseHopperHorizontal(hopper));
+
+        commandDriverController.povUp().onTrue(new ExtendBottomHooks(climber));
+        commandDriverController.povDown().onTrue(new RetractBottomHooks(climber));
 
 
         //commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
