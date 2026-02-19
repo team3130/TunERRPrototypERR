@@ -5,6 +5,7 @@ import java.util.List;
 
 public class PowerBank {
     private static PowerBank centralBank = new PowerBank();
+    private static PowerBank testBank = new PowerBank();
     private final ArrayList<PowerAccount> accounts;
     private final ArrayList<PowerAccount> nonZeroAccounts;
     private final double maxPower = 600;
@@ -24,6 +25,10 @@ public class PowerBank {
 
     public static PowerBank getInstance() {
         return centralBank;
+    }
+
+    public static PowerBank getTestInstance() {
+        return testBank;
     }
 
     private void calculateMinimunAllocation() {

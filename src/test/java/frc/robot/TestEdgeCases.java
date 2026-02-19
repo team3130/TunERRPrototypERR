@@ -14,10 +14,10 @@ public class TestEdgeCases {
 
     @BeforeAll
     public static void initialize(){
-        one = PowerBank.getInstance().openAccount("one", 1);
-        two = PowerBank.getInstance().openAccount("two", 10);
-        three = PowerBank.getInstance().openAccount("three", 10);
-        four = PowerBank.getInstance().openAccount("four", 10);
+        one = PowerBank.getTestInstance().openAccount("one", 1);
+        two = PowerBank.getTestInstance().openAccount("two", 10);
+        three = PowerBank.getTestInstance().openAccount("three", 10);
+        four = PowerBank.getTestInstance().openAccount("four", 10);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class TestEdgeCases {
         four.setMinRequest(0);
         four.setMaxRequest(10000);
 
-        PowerBank.getInstance().calculate();
+        PowerBank.getTestInstance().calculate();
 
         System.out.println("one Allowance: " + one.getAllowance());
         System.out.println("two Allowance: " + two.getAllowance());
