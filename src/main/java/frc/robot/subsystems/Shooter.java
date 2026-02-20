@@ -39,7 +39,6 @@ public class Shooter extends SubsystemBase{
     //Objects/Constants
     private final TalonFX talonWheelLeft;
     private final TalonFX talonWheelRight;
-    private final TalonFX talonRightHood;
     private final TalonFX talonLeftHood;
     private final DigitalInput limitSwitch;
     private final double gearRatioHood = 1; //gearRatio * Code Rotations = Rotations IRL
@@ -69,12 +68,10 @@ public class Shooter extends SubsystemBase{
     public Shooter() {
         //Robot CAN ID
         talonLeftHood = new TalonFX(0);
-        talonRightHood = new TalonFX(0);
         talonWheelLeft = new TalonFX(33);
         talonWheelRight = new TalonFX(32);
         this.limitSwitch = null;
         talonWheelRight.setControl(new Follower(talonWheelLeft.getDeviceID(), MotorAlignmentValue.Opposed));
-        talonRightHood.setControl(new Follower(talonLeftHood.getDeviceID(), MotorAlignmentValue.Opposed));
         talonLeftHood.setPosition(0);
     
         //PID For Hood
