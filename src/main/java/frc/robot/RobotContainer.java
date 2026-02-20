@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -160,6 +161,11 @@ public class RobotContainer {
         //ommandDriverController.povUp().whileTrue(command);
 
         drivetrain.registerTelemetry(logger::telemeterize);
+    }
+
+    public void retractHooks() {
+        climber.retractBottomHooks();
+
     }
 
     public Command getAutonomousCommand() {
