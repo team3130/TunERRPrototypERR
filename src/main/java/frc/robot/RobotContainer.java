@@ -26,8 +26,6 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.Swerve;
 import frc.robot.commands.DriveWithTransPID;
-import frc.robot.commands.ReverseIntake;
-import frc.robot.commands.RunIntake;
 import frc.robot.commands.UpdateOdoFromVision;
 import frc.robot.commands.Climber.Climber.AutonClimb;
 import frc.robot.commands.Climber.Climber.ExtendTopHooks;
@@ -36,6 +34,7 @@ import frc.robot.commands.Shooter.ShootForward;
 import frc.robot.commands.Shooter.ShootForwardBasic;
 import frc.robot.commands.Shooter.ShootInverted;
 import frc.robot.commands.Shooter.ShootInvertedBasic;
+import frc.robot.commands.TheHood.BasicHood.HoodSetAngleBasic;
 import frc.robot.commands.VHopperNew.VHopperBasic.setInverseSpeedBasic;
 import frc.robot.commands.VHopperNew.VHopperBasic.setSpeedBasic;
 import frc.robot.commands.VHopperNew.VHopperPID.setPIDInvertedSpeed;
@@ -54,12 +53,12 @@ import frc.robot.commands.Hopper.ReverseHopperVertical;
 import frc.robot.commands.Hopper.Reversehopper;
 import frc.robot.commands.Hopper.RunHopper;
 import frc.robot.commands.Hopper.RunHoppervertical;
+import frc.robot.commands.Intake.ReverseIntake;
+import frc.robot.commands.Intake.RunIntake;
 import frc.robot.commands.IntakePivot.IntakePivotBasic.IntakeSetDownBasic;
 import frc.robot.commands.IntakePivot.IntakePivotBasic.IntakeSetUpBasic;
 import frc.robot.commands.IntakePivot.IntakePivotPID.IntakeSetDownPID;
 import frc.robot.commands.IntakePivot.IntakePivotPID.IntakeSetUpPID;
-import frc.robot.commands.RunIntake;
-import frc.robot.commands.ReverseIntake;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -172,8 +171,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot Foward PID", new ShootForward(shooter));
         NamedCommands.registerCommand("Shoot Inverted PID", new ShootInverted(shooter));
 //hood
-        NamedCommands.registerCommand("null", command);
-        NamedCommands.registerCommand("null", command);
+        NamedCommands.registerCommand("Hood Set Angle", new HoodSetAngleBasic(shooter));
 //Intake Pivot
         NamedCommands.registerCommand("Intake Set Up Basic", new IntakeSetUpBasic(pivot));
         NamedCommands.registerCommand("Intake Set Down Basic", new IntakeSetDownBasic(pivot));
@@ -213,20 +211,7 @@ public class RobotContainer {
         //commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
         //if triangle is pressed hopper should run until triangle is pressed again, same for vert.hopper but with the x button
         //wrong
-        //commandDriverController.triangle().whileTrue(new RunHopper(hopper));
-        //commandDriverController.cross().whileTrue(new RunHoppervertical(verticalHopper));
         
-        //NEW VHOPPER
-        //commandDriverController.square().whileTrue(new setInverseSpeedBasic(vHopperNew));
-        //commandDriverController.circle().whileTrue(new setSpeedBasic(vHopperNew));
-
-        //NEW VHOPPER PID
-        commandDriverController.square().whileTrue(new setPIDSpeed(vHopperNew));
-        commandDriverController.circle().whileTrue(new setInverseSpeedBasic(vHopperNew));
-
-        
-        //commandDriverController.square().whileTrue(new Reversehopper(hopper));
-        //commandDriverController.circle().whileTrue(new ReverseHopperVertical(verticalHopper));
         //commandDriverController.circle().whileTrue(new RunTalonSRX(talon5, 1));
         //commandDriverController.square().whileTrue(new RunVictor(victor4));
         //commandDriverController.L1().whileTrue(new RunTalonFX(falcon1, 1));
@@ -234,20 +219,27 @@ public class RobotContainer {
 
         //commandDriverController.R1().onTrue(new ToggleHubTargeting(drivetrain));
 
+        //Commands
         commandDriverController.L1().whileTrue(new RunIntake(intake, commandDriverController));
-        commandDriverController.R1().whileTrue(new ReverseIntake(intake, commandDriverController));
+        commandDriverController.R2().whileTrue(new ShootForward(shooter));
+        commandDriverController.triangle().whileTrue(new RunHopper(hopper));
+        commandDriverController.circle().whileTrue(new setSpeedBasic(vHopperNew));
+        commandDriverController.square().whileTrue(new HoodSetAngleBasic(shooter));
+        //commandDriverController.circle().whileTrue(new setInverseSpeedBasic(vHopperNew));
+        //commandDriverController.square().whileTrue(new setPIDSpeed(vHopperNew));
+        //commandDriverController.R1().whileTrue(new ReverseIntake(intake, commandDriverController));
+        //commandDriverController.L2().whileTrue(new ShootInverted(shooter));
+        //commandDriverController.R2().whileTrue(new ShootForwardBasic(shooter));
+        //commandDriverController.L2().whileTrue(new ShootInvertedBasic(shooter));
+        //commandDriverController.square().whileTrue(new Reversehopper(hopper));
+        //commandDriverController.circle().whileTrue(new ReverseHopperVertical(verticalHopper));
+        //commandDriverController.square().whileTrue(new setInverseSpeedBasic(vHopperNew));
+        //commandDriverController.cross().whileTrue(new RunHoppervertical(verticalHopper));
 
         // reset the field-centric heading
         commandDriverController.povUp().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-
         //ommandDriverController.povUp().whileTrue(command);
-
         drivetrain.registerTelemetry(logger::telemeterize);
-
-        //commandDriverController.R2().whileTrue(new ShootForwardBasic(shooter));
-        //commandDriverController.L2().whileTrue(new ShootInvertedBasic(shooter));
-        commandDriverController.R2().whileTrue(new ShootForward(shooter));
-        commandDriverController.L2().whileTrue(new ShootInverted(shooter));
     }
 
     public Command getAutonomousCommand() {

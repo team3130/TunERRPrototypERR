@@ -30,6 +30,12 @@ public class Shooter extends SubsystemBase{
     private final double accelerationRotations = Units.radiansToRotations(accelerationMetersPerSecSquared/Units.inchesToMeters(2));
     private final double flyWheelSpeed = 1; // CHANGE FOR PERCENTAGE
 
+    private final double getUpHoodTarget = 90.0;
+
+    //This is the thingy :)
+    private final double getAngleHoodTarget = 45;
+   
+
     //Objects/Constants
     private final TalonFX talonWheelLeft;
     private final TalonFX talonWheelRight;
@@ -69,6 +75,7 @@ public class Shooter extends SubsystemBase{
         this.limitSwitch = null;
         talonWheelRight.setControl(new Follower(talonWheelLeft.getDeviceID(), MotorAlignmentValue.Opposed));
         talonRightHood.setControl(new Follower(talonLeftHood.getDeviceID(), MotorAlignmentValue.Opposed));
+        talonLeftHood.setPosition(0);
     
         //PID For Hood
         slot1Configs = new Slot1Configs();
@@ -102,6 +109,12 @@ public class Shooter extends SubsystemBase{
         voltRequest0 = new MotionMagicVelocityVoltage(0);
     }
     
+
+    public double getUpHoodTarget() {return getUpHoodTarget/360 * gearRatioHood;}
+    public double getAngleHoodTarget() {return getAngleHoodTarget/360 * gearRatioHood;}
+    public double getDownHoodTarget() {return 0;}
+    public double getMotorPosition() {return talonLeftHood.getPosition().getValueAsDouble() * gearRatioHood;}
+
     //Hood Methods
     //Set Angle to Zero
     public void angleZero() {
@@ -111,8 +124,26 @@ public class Shooter extends SubsystemBase{
         }
     }
 
+    public void hoodUp() {
+        talonLeftHood.set(0.1);
+    }
+
+    public void hoodDown() {
+        talonLeftHood.set(-0.1);
+    }
+
+    public void hoodStop() {
+        talonLeftHood.set(0);
+    }
+
     //Method to Angle hood to any angle
     public void hoodAngler() {
+        double angle = Math.PI/2;
+        final double rotationHood = angle/(2*Math.PI);
+        talonLeftHood.setControl(voltRequest1.withPosition(rotationHood * gearRatioHood));
+    }
+
+    public void HoodSet90() {
         double angle = Math.PI/2;
         final double rotationHood = angle/(2*Math.PI);
         talonLeftHood.setControl(voltRequest1.withPosition(rotationHood * gearRatioHood));
