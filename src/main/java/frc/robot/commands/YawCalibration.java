@@ -37,7 +37,7 @@ public class YawCalibration extends Command {
       this.driveTrain = driveTrain;
       AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
       photonPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamera);
-      limelight = new Limelight(driveTrain);
+      this.limelight = limelight;
   }
 
   // Called when the command is initially scheduled.

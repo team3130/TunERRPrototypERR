@@ -5,6 +5,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Limelight;
 
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -16,13 +17,15 @@ import java.util.Optional;
 
 public class RollPitchCalibration extends Command {
     private final CommandSwerveDrivetrain drivetrain;
+    private final Limelight limelight;
 
     public ArrayList<double[]> input = new ArrayList<>();
 
     public double fiducialID = 19;
 
-    public RollPitchCalibration(CommandSwerveDrivetrain drivetrain) {
+    public RollPitchCalibration(CommandSwerveDrivetrain drivetrain, Limelight limelight) {
         this.drivetrain = drivetrain;
+        this.limelight = limelight;
     }
 
     @Override
@@ -32,8 +35,7 @@ public class RollPitchCalibration extends Command {
 
     @Override
     public void execute() {
-        PhotonPipelineResult result = new PhotonPipelineResult();
-
+        PhotonPipelineResult result = limelight.getLatestResult();
         if (!result.hasTargets()) return;
 
         for (PhotonTrackedTarget target : result.getTargets()) {
