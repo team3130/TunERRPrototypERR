@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.PowerAccount;
+import frc.robot.PowerBank;
 import frc.robot.SlewRateLimiter;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
@@ -107,8 +108,8 @@ public class Shooter extends SubsystemBase{
         voltRequest0 = new MotionMagicVelocityVoltage(0);
 
         //Slew Rate Limiter
-        slewRateLimiter = new SlewRateLimiter(accelerationRotations, -accelerationRotations, 0, accelerationRotations, 0.00007);
-        shooterAccount = new PowerAccount("shooter", 0, accelerationRotations, 0);
+        slewRateLimiter = new SlewRateLimiter(accelerationRotations, -accelerationRotations, 0, 0.00007);
+        shooterAccount = PowerBank.getInstance().openAccount("shooter", 1);
     }
     
     //Hood Methods
@@ -155,7 +156,7 @@ public class Shooter extends SubsystemBase{
         shooterAccount.setMaxRequest(powerReq);
         double rotAccel = slewRateLimiter.getAccelerationFromPower(shooterAccount.getAllowance(), slewRateLimiter.lastValue());
         double newRotVel = slewRateLimiter.calculate(sign*rotAccel);
-        talonWheelLeft.set(newRotVel);
+        talonWheelLeft.setControl(voltRequest0.withVelocity(newRotVel));
     }
 
     //Stop for all shooter commands

@@ -13,15 +13,13 @@ public class SlewRateLimiter implements Sendable {
     private double negativeRateLimit;
     private double prevVal;
     private double prevTime;
-    private final double maxAccel;
     private final double inertiaConstant;
 
-    public SlewRateLimiter(double positiveRateLimit, double negativeRateLimit, double initialValue, double maxAccel, double inertiaConstant) {
+    public SlewRateLimiter(double positiveRateLimit, double negativeRateLimit, double initialValue, double inertiaConstant) {
         this.positiveRateLimit = positiveRateLimit;
         this.negativeRateLimit = negativeRateLimit;
         this.prevVal = initialValue;
         this.prevTime = MathSharedStore.getTimestamp();
-        this.maxAccel = maxAccel;
         this.inertiaConstant = inertiaConstant;
     }
 
@@ -29,7 +27,6 @@ public class SlewRateLimiter implements Sendable {
         this.positiveRateLimit = rateLimit;
         this.negativeRateLimit = rateLimit;
         this.prevVal = (double)0.0F;
-        this.maxAccel = 10000;
         this.inertiaConstant = 1;
     }
 
@@ -65,6 +62,10 @@ public class SlewRateLimiter implements Sendable {
         this.negativeRateLimit = negativeRateLimit;
     }
 
+    public double getPositiveRateLimit() {
+        return positiveRateLimit;
+    }
+
     public void setPositiveRateLimit(double positiveRateLimit) {
         this.positiveRateLimit = positiveRateLimit;
     }
@@ -86,10 +87,7 @@ public class SlewRateLimiter implements Sendable {
     public double getPowerFromAcceleration(double a, double v) {
         return Math.abs(inertiaConstant*a*v);
     }
-    public double getAccelerationFromPower(double P, double v) { return Math.min(maxAccel, Math.abs(P/(inertiaConstant*v))); }
-    public double getMaxAccel() {
-        return maxAccel;
-    }
+    public double getAccelerationFromPower(double P, double v) { return Math.min(positiveRateLimit, Math.abs(P/(inertiaConstant*v))); }
 
 
     public Translation2d wrapAngle(Translation2d targetVector, CommandSwerveDrivetrain driveTrain) {

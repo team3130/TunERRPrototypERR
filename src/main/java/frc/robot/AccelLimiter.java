@@ -12,7 +12,7 @@ public class AccelLimiter {
     public final PowerAccount rotationAccount;
 
     public AccelLimiter(double positiveRateLimit, double negativeRateLimit, double initialValue, double rateLimit) {
-        driveLimiter = new SlewRateLimiter(positiveRateLimit, negativeRateLimit, initialValue, 7.875, 70.0);
+        driveLimiter = new SlewRateLimiter(positiveRateLimit, negativeRateLimit, initialValue, 70.0);
         thetaLimiter = new SlewRateLimiter(rateLimit);
         translationAccount = PowerBank.getInstance().openAccount("Translation", 100);
         rotationAccount = PowerBank.getInstance().openAccount("Rotation", 100);
@@ -29,7 +29,7 @@ public class AccelLimiter {
                 double cos = Math.cos(delta);
                 if(cos > 0){ //positive cos means keep moving (turn angle is small)
                     var mag = vector.getNorm() * cos;
-                    translationAccount.setMaxRequest(driveLimiter.getPowerFromAcceleration(driveLimiter.getMaxAccel(), driveLimiter.lastValue()));
+                    translationAccount.setMaxRequest(driveLimiter.getPowerFromAcceleration(driveLimiter.getPositiveRateLimit(), driveLimiter.lastValue()));
                     driveLimiter.setPositiveRateLimit(driveLimiter.getAccelerationFromPower(translationAccount.getAllowance(), driveLimiter.lastValue()));
                     mag = driveLimiter.calculate(mag);
                     double thetaLimiterConstant = 10;
@@ -42,7 +42,7 @@ public class AccelLimiter {
             }
             //here we continue if we are decelerating, either small mag or big turn.
             thetaLimiter.reset(thetaLimiter.lastValue());
-            translationAccount.setMaxRequest(driveLimiter.getPowerFromAcceleration(driveLimiter.getMaxAccel(), driveLimiter.lastValue()));
+            translationAccount.setMaxRequest(driveLimiter.getPowerFromAcceleration(driveLimiter.getPositiveRateLimit(), driveLimiter.lastValue()));
             driveLimiter.setPositiveRateLimit(driveLimiter.getAccelerationFromPower(translationAccount.getAllowance(), driveLimiter.lastValue()));
             var newMag = driveLimiter.calculate(0);
             Rotation2d angle = new Rotation2d(thetaLimiter.lastValue());
@@ -60,7 +60,7 @@ public class AccelLimiter {
             else { //if the norm is significant, start driving
                 isAngleReal = true;
                 thetaLimiter.reset(vector.getAngle().getRadians());
-                translationAccount.setMaxRequest(driveLimiter.getPowerFromAcceleration(driveLimiter.getMaxAccel(), driveLimiter.lastValue()));
+                translationAccount.setMaxRequest(driveLimiter.getPowerFromAcceleration(driveLimiter.getPositiveRateLimit(), driveLimiter.lastValue()));
                 driveLimiter.setPositiveRateLimit(driveLimiter.getAccelerationFromPower(translationAccount.getAllowance(), driveLimiter.lastValue()));
                 var mag = driveLimiter.calculate(vector.getNorm());
                 Translation2d newVector = new Translation2d(mag, vector.getAngle());
